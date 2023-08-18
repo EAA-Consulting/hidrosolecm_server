@@ -1,6 +1,6 @@
 import { MissingParamError } from '../../errors'
-import { type Controller } from '../../protocols/controller'
-import { type EmailValidator } from '../../protocols/emailValidator'
+import { type Controller } from '../../interfaces/controller'
+import { type EmailValidator } from '../../interfaces/emailValidator'
 import { SignUpController } from './signupController'
 
 interface SutTypes {
