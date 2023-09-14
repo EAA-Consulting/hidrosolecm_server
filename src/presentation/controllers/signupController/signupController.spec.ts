@@ -12,9 +12,10 @@ interface SutTypes {
 
 const makeSignUpApplication = (): SignUpApplication => {
   class SignupAppMock implements SignUpApplication {
-    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AddAccount | null> {
+    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AddAccount> {
       return await new Promise(resolve => {
         resolve({
+          id: 1,
           name,
           email,
           password
@@ -225,5 +226,18 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(500)
     expect(response.body).toEqual(new ServerError())
+  })
+  test('Ensure the user is created', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'edi@gmail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(200)
   })
 })
