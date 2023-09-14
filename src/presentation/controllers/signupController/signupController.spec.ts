@@ -173,4 +173,18 @@ describe('SignUp Controller', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('Email is not valid'))
   })
+  test('Ensure I get error 400 when Password does not match password Confirmation', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password2'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new InvalidParamError('Password and password confirmation must be equal'))
+  })
 })
