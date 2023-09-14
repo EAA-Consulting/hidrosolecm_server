@@ -14,6 +14,9 @@ export class SignUpController implements Controller {
     if (!name || !email || !password || !passwordConfirmation) {
       return badRequest(new MissingParamError('Missing param: name'))
     }
+    if (password !== passwordConfirmation) {
+      return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
+    }
     if (!await this.signupApplication.handle(name, email, password, passwordConfirmation)) {
       return badRequest(new InvalidParamError('Email is not valid'))
     }
