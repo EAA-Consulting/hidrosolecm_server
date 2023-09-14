@@ -1,4 +1,5 @@
 import { type SignUpApplication } from '../../../application/use-cases/interfaces/signupInterface'
+import { type AddAccount } from '../../../domain/use-cases/interfaces/addAccount'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
 import { SignUpController } from './signupController'
@@ -11,8 +12,14 @@ interface SutTypes {
 
 const makeSignUpApplication = (): SignUpApplication => {
   class SignupAppMock implements SignUpApplication {
-    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<boolean> {
-      return await new Promise(resolve => { resolve(true) })
+    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AddAccount | null> {
+      return await new Promise(resolve => {
+        resolve({
+          name,
+          email,
+          password
+        })
+      })
     }
   }
   return new SignupAppMock()
@@ -158,7 +165,7 @@ describe('SignUp Controller', () => {
 
   test("Ensure I get error 400 from Controller if I don't pass a valid email", async () => {
     const { sut, signupApplicationStub } = makeSut()
-    jest.spyOn(signupApplicationStub, 'handle').mockReturnValueOnce(new Promise(resolve => { resolve(false) }))
+    jest.spyOn(signupApplicationStub, 'handle').mockReturnValueOnce(new Promise(resolve => { resolve(null) }))
 
     const httpRequest = {
       body: {
