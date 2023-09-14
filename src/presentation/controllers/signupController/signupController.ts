@@ -1,11 +1,12 @@
-import { MissingParamError } from '../../errors'
+import { type SignUpApplication } from '../../../application/use-cases/interfaces/signupInterface'
+import { InvalidParamError, MissingParamError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
-import { type EmailValidator } from '../../interfaces/emailValidator'
 import { badRequest, successRequest, type HttpRequest, type HttpResponse } from '../../interfaces/http'
 
 export class SignUpController implements Controller {
-  constructor (private readonly emailValidator: EmailValidator) {
-    this.emailValidator = emailValidator
+  signupApplication: SignUpApplication
+  constructor (signupApplication: SignUpApplication) {
+    this.signupApplication = signupApplication
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -13,8 +14,8 @@ export class SignUpController implements Controller {
     if (!name || !email || !password || !passwordConfirmation) {
       return badRequest(new MissingParamError('Missing param: name'))
     }
-    if (!this.emailValidator.isValid(httpRequest.body.email)) {
-      return badRequest(new MissingParamError('Email is not valid'))
+    if (!await this.signupApplication.handle(name, email, password, passwordConfirmation)) {
+      return badRequest(new InvalidParamError('Email is not valid'))
     }
 
     return successRequest({})
