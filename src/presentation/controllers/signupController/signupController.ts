@@ -1,5 +1,6 @@
 import { type SignUpApplication } from '../../../application/use-cases/interfaces/signupInterface'
 import { InvalidParamError, MissingParamError } from '../../errors'
+import { serverError } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
 import { badRequest, successRequest, type HttpRequest, type HttpResponse } from '../../interfaces/http'
 
@@ -10,17 +11,26 @@ export class SignUpController implements Controller {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { name, email, password, passwordConfirmation } = httpRequest.body
-    if (!name || !email || !password || !passwordConfirmation) {
-      return badRequest(new MissingParamError('Missing param: name'))
-    }
-    if (password !== passwordConfirmation) {
-      return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
-    }
-    if (!await this.signupApplication.handle(name, email, password, passwordConfirmation)) {
-      return badRequest(new InvalidParamError('Email is not valid'))
-    }
+    try {
+      const { name, email, password, passwordConfirmation } = httpRequest.body
+      if (!name || !email || !password || !passwordConfirmation) {
+        return badRequest(new MissingParamError('Missing param: name'))
+      }
+      if (password !== passwordConfirmation) {
+        return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
+      }
+      try {
+        await this.signupApplication.handle(name, email, password, passwordConfirmation)
+      } catch (error) {
+        if (error.message.includes('Email is not valid')) {
+          return badRequest(new InvalidParamError('Email is not valid'))
+        }
+        throw error
+      }
 
-    return successRequest({})
+      return successRequest({})
+    } catch (error) {
+      return serverError()
+    }
   }
 }

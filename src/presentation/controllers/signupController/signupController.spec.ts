@@ -1,6 +1,6 @@
 import { type SignUpApplication } from '../../../application/use-cases/interfaces/signupInterface'
 import { type AddAccount } from '../../../domain/use-cases/interfaces/addAccount'
-import { InvalidParamError, MissingParamError } from '../../errors'
+import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
 import { SignUpController } from './signupController'
 
@@ -165,7 +165,7 @@ describe('SignUp Controller', () => {
 
   test("Ensure I get error 400 from Controller if I don't pass a valid email", async () => {
     const { sut, signupApplicationStub } = makeSut()
-    jest.spyOn(signupApplicationStub, 'handle').mockReturnValueOnce(new Promise(resolve => { resolve(null) }))
+    jest.spyOn(signupApplicationStub, 'handle').mockImplementationOnce(() => { throw new InvalidParamError('Email is not valid') })
 
     const httpRequest = {
       body: {
@@ -193,5 +193,37 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('Password and password confirmation must be equal'))
+  })
+
+  test('Should sut throws if signupApplication throws', async () => {
+    const { sut, signupApplicationStub } = makeSut()
+    jest.spyOn(signupApplicationStub, 'handle').mockRejectedValueOnce(new InvalidParamError('Email is not valid'))
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new InvalidParamError('Email is not valid'))
+  })
+
+  test('Ensure if server throws error I get error 500 from Controller', async () => {
+    const { sut, signupApplicationStub } = makeSut()
+    jest.spyOn(signupApplicationStub, 'handle').mockImplementation(() => { throw new Error() })
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toEqual(new ServerError())
   })
 })
