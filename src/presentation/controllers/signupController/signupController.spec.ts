@@ -1,5 +1,5 @@
 import { type SignUpApplication } from '../../../application/use-cases/interfaces/signupInterface'
-import { type AddAccount } from '../../../domain/use-cases/interfaces/addAccount'
+import { type AccountModel } from '../../../Domain/model/AccountModel'
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
 import { SignUpController } from './signupController'
@@ -12,7 +12,7 @@ interface SutTypes {
 
 const makeSignUpApplication = (): SignUpApplication => {
   class SignupAppMock implements SignUpApplication {
-    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AddAccount> {
+    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AccountModel> {
       return await new Promise(resolve => {
         resolve({
           id: 1,

@@ -15,7 +15,7 @@ export class Signup implements SignUpApplication {
     }
 
     return {
-      id: '1',
+      id: 1,
       name: 'any_name',
       email: 'any_email',
       password: 'any_password'
