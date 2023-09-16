@@ -24,43 +24,38 @@ describe('Signup Services', () => {
   }
 
   test('Ensure SignupService calls EmailValidator with correct email', async () => {
-    const { sut } = makeSut()
+    const { sut, emailValidatorStub } = makeSut()
     const name = 'any_name'
     const email = 'any_email'
     const password = 'any_password'
     const passwordConfirmation = 'any_password'
+    const spyEmail = jest.spyOn(emailValidatorStub, 'isValid')
+    await sut.handle(name, email, password, passwordConfirmation)
 
-    const response = await sut.handle(name, email, password, passwordConfirmation)
-
-    expect(response).toBe(true)
-  })
-  test('Ensure SignupApplication calls EmailValidator with correct email', async () => {
-    const { sut } = makeSut()
-
-    const name = 'any_name'
-    const email = 'any_email'
-    const password = 'any_password'
-    const passwordConfirmation = 'any_password'
-
-    const response = await sut.handle(name, email, password, passwordConfirmation)
-    expect(response).toBe(true)
+    expect(spyEmail).toHaveBeenCalledWith(email)
   })
 
   test('Ensure a valid email is sent to the signup', async () => {
     const { sut, emailValidatorStub } = makeSut()
-    const spyEmail = jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(true)
 
     const name = 'any_name'
     const email = 'edi@gmail.com'
     const password = 'any_password'
     const passwordConfirmation = 'any_password'
 
-    sut.handle(name, email, password, passwordConfirmation)
+    const response = await sut.handle(name, email, password, passwordConfirmation)
 
-    expect(spyEmail).toHaveBeenCalledWith('edi@gmail.com')
+    expect(response).toBeTruthy()
+  })
+  test('Ensure SignupApplication returns null if EmailValidator returns false', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+
+    const name = 'any_name'
+    const email = 'asdfasdf'
+    const password = 'any_password'
+    const passwordConfirmation = 'any_password'
+    await expect(sut.handle(name, email, password, passwordConfirmation)).rejects.toThrow()
   })
 })
-
-// if (!this.emailValidator.isValid(httpRequest.body.email)) {
-//   return badRequest(new MissingParamError('Email is not valid'))
-// }
