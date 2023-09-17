@@ -13,9 +13,13 @@ export class SignUpController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { name, email, password, passwordConfirmation } = httpRequest.body
-      if (!name || !email || !password || !passwordConfirmation) {
-        return badRequest(new MissingParamError('Missing param: name'))
+      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return badRequest(new MissingParamError(field))
+        }
       }
+
       if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
       }
