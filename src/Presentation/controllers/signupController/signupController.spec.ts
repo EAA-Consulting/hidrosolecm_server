@@ -12,7 +12,7 @@ interface SutTypes {
 
 const makeSignUpApplication = (): SignUpApplication => {
   class SignupAppMock implements SignUpApplication {
-    async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AccountModel> {
+    async handle (name: string, email: string, password: string): Promise<AccountModel> {
       return await new Promise(resolve => {
         resolve({
           id: 1,
@@ -161,7 +161,7 @@ describe('SignUp Controller', () => {
 
     }
     await sut.handle(httpRequest)
-    expect(spySignup).toHaveBeenCalledWith('any_name', 'any_email', 'any_password', 'any_password')
+    expect(spySignup).toHaveBeenCalledWith('any_name', 'any_email', 'any_password')
   })
 
   test("Ensure I get error 400 from Controller if I don't pass a valid email", async () => {
