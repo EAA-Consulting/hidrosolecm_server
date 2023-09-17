@@ -9,8 +9,6 @@ export class AddAccount implements AddAccountRepository {
 
   async add (account: AddAccountData): Promise<AccountModel> {
     const hashedPassword = await this.encrypter.encrypt(account.password)
-    const accountData = await this.addAccountRepository.add({ ...account, password: hashedPassword })
-
-    return accountData
+    return await this.addAccountRepository.add({ ...account, password: hashedPassword })
   }
 }
