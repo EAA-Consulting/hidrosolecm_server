@@ -27,6 +27,7 @@ describe('Add Account Repository', () => {
         if (err) {
           console.log(err)
         }
+        db.detach()
       })
     })
   })
