@@ -1,5 +1,5 @@
 import { type AccountModel } from '../../../Domain/model/AccountModel'
-import { type AddAccountData, type AddAccountServices } from '../../../Domain/services/interfaces/addAccount'
+import { type AddAccountData, type AddAccountServices } from '../../../Domain/services/interfaces/addAccountService'
 import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignUpApplication } from '../interfaces/signupInterface'
 import { Signup } from './signup'

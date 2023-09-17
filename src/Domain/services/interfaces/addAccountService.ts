@@ -5,6 +5,6 @@ export interface AddAccountData {
   email: string
   password: string
 }
-export interface AddAccount {
+export interface AddAccountServices {
   add: (account: AddAccountData) => Promise<AccountModel>
 }

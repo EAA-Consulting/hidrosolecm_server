@@ -1,5 +1,5 @@
 import { type AccountModel } from '../../../Domain/model/AccountModel'
-import { type AddAccountServices } from '../../../Domain/services/interfaces/addAccount'
+import { type AddAccountServices } from '../../../Domain/services/interfaces/addAccountService'
 import { InvalidParamError } from '../../../Presentation/errors'
 import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignUpApplication } from '../interfaces/signupInterface'

@@ -1,7 +1,7 @@
 import firebird from 'node-firebird'
 import { type AccountModel } from '../../../Domain/model/AccountModel'
 import { type AddAccountRepository } from '../../../Domain/repositories/account/addAccountRepository'
-import { type AddAccountData } from '../../../Domain/services/interfaces/addAccount'
+import { type AddAccountData } from '../../../Domain/services/interfaces/addAccountService'
 import { FirebirdOptions } from '../../helpers/database/firebirdHelper'
 export class AddAccount implements AddAccountRepository {
   async add (account: AddAccountData): Promise<AccountModel> {

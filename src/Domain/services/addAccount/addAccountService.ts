@@ -1,9 +1,9 @@
 import { type Encrypter } from '../../../Application/use-cases/interfaces/encrypter'
 import { type AccountModel } from '../../model/AccountModel'
 import { type AddAccountRepository } from '../../repositories/account/addAccountRepository'
-import { type AddAccountData } from '../interfaces/addAccount'
+import { type AddAccountData, type AddAccountServices } from '../interfaces/addAccountService'
 
-export class AddAccount implements AddAccountRepository {
+export class AddAccount implements AddAccountServices {
   constructor (private readonly encrypter: Encrypter, private readonly addAccountRepository: AddAccountRepository) {
   }
 

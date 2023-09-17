@@ -1,8 +1,8 @@
 import { type Encrypter } from '../../../Application/use-cases/interfaces/encrypter'
 import { type AccountModel } from '../../model/AccountModel'
 import { type AddAccountRepository } from '../../repositories/account/addAccountRepository'
-import { type AddAccountData } from '../interfaces/addAccount'
-import { AddAccount } from './addAccount'
+import { type AddAccountData } from '../interfaces/addAccountService'
+import { AddAccount } from './addAccountService'
 describe('Add Account UseCase', () => {
   interface SutTypes {
     sut: AddAccount
