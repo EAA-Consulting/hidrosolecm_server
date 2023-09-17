@@ -1,3 +1,5 @@
+import { type AccountModel } from '../../../Domain/model/AccountModel'
+import { type AddAccountData, type AddAccountServices } from '../../../Domain/services/interfaces/addAccount'
 import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignUpApplication } from '../interfaces/signupInterface'
 import { Signup } from './signup'
@@ -8,6 +10,22 @@ interface SutTypes {
 }
 
 describe('Signup Services', () => {
+  const makeAddAccountService = (): AddAccountServices => {
+    class AddAccountStub implements AddAccountServices {
+      async add (accountData: AddAccountData): Promise<AccountModel> {
+        return await new Promise(resolve => {
+          resolve({
+            id: 1,
+            name: 'any_name',
+            email: 'any_email',
+            password: 'any_password'
+          })
+        })
+      }
+    }
+
+    return new AddAccountStub()
+  }
   const makeSut = (): SutTypes => {
     class EmailValidatorStub {
       isValid (email: string): boolean {
@@ -15,7 +33,8 @@ describe('Signup Services', () => {
       }
     }
     const emailValidatorStub = new EmailValidatorStub()
-    const signupApplication = new Signup(emailValidatorStub)
+    const accountService = makeAddAccountService()
+    const signupApplication = new Signup(emailValidatorStub, accountService)
 
     return {
       emailValidatorStub,
@@ -28,9 +47,8 @@ describe('Signup Services', () => {
     const name = 'any_name'
     const email = 'any_email'
     const password = 'any_password'
-    const passwordConfirmation = 'any_password'
     const spyEmail = jest.spyOn(emailValidatorStub, 'isValid')
-    await sut.handle(name, email, password, passwordConfirmation)
+    await sut.handle(name, email, password)
 
     expect(spyEmail).toHaveBeenCalledWith(email)
   })
@@ -42,9 +60,8 @@ describe('Signup Services', () => {
     const name = 'any_name'
     const email = 'edi@gmail.com'
     const password = 'any_password'
-    const passwordConfirmation = 'any_password'
 
-    const response = await sut.handle(name, email, password, passwordConfirmation)
+    const response = await sut.handle(name, email, password)
 
     expect(response).toBeTruthy()
   })
@@ -55,7 +72,6 @@ describe('Signup Services', () => {
     const name = 'any_name'
     const email = 'asdfasdf'
     const password = 'any_password'
-    const passwordConfirmation = 'any_password'
-    await expect(sut.handle(name, email, password, passwordConfirmation)).rejects.toThrow()
+    await expect(sut.handle(name, email, password)).rejects.toThrow()
   })
 })

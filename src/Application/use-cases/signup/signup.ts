@@ -1,24 +1,21 @@
 import { type AccountModel } from '../../../Domain/model/AccountModel'
+import { type AddAccountServices } from '../../../Domain/services/interfaces/addAccount'
 import { InvalidParamError } from '../../../Presentation/errors'
 import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignUpApplication } from '../interfaces/signupInterface'
-
 export class Signup implements SignUpApplication {
-  emailValidator: EmailValidator
-  constructor (emailValidator: EmailValidator) {
-    this.emailValidator = emailValidator
+  constructor (private readonly emailValidator: EmailValidator, private readonly addAccount: AddAccountServices) {
   }
 
-  async handle (name: string, email: string, password: string, passwordConfirmation: string): Promise<AccountModel> {
+  async handle (name: string, email: string, password: string): Promise<AccountModel> {
     if (!this.emailValidator.isValid(email)) {
       throw new InvalidParamError('Email is not valid')
     }
 
-    return {
-      id: 1,
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password'
-    }
+    return await this.addAccount.add({
+      name,
+      email,
+      password
+    })
   }
 }
