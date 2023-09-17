@@ -105,7 +105,7 @@ describe('SignUp Controller', () => {
 
     }
     const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('Missing param: name'))
+    expect(response.body).toEqual(new MissingParamError('name'))
   })
   test('Ensure I get error 400 from Controller if I dont pass email', async () => {
     const { sut } = makeSut()
@@ -118,7 +118,7 @@ describe('SignUp Controller', () => {
 
     }
     const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('Missing param: name'))
+    expect(response.body).toEqual(new MissingParamError('email'))
   })
   test('Ensure I get error 400 from Controller if I dont pass password', async () => {
     const { sut } = makeSut()
@@ -131,7 +131,7 @@ describe('SignUp Controller', () => {
 
     }
     const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('Missing param: name'))
+    expect(response.body).toEqual(new MissingParamError('password'))
   })
   test('Ensure I get error 400 from Controller if I dont pass passwordConfirmation', async () => {
     const { sut } = makeSut()
@@ -144,7 +144,7 @@ describe('SignUp Controller', () => {
 
     }
     const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('Missing param: name'))
+    expect(response.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 
   test('Ensure SignupApplication is called with correct params', async () => {
