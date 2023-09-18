@@ -1,8 +1,8 @@
 import { type SignUpApplication } from '../../../Application/use-cases/interfaces/signupInterface'
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { serverError } from '../../helpers/httpHelpers'
+import { badRequest, serverError, success } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
-import { badRequest, successRequest, type HttpRequest, type HttpResponse } from '../../interfaces/http'
+import { type HttpRequest, type HttpResponse } from '../../interfaces/http'
 
 export class SignUpController implements Controller {
   signupApplication: SignUpApplication
@@ -29,10 +29,11 @@ export class SignUpController implements Controller {
         if (error.message.includes('Email is not valid')) {
           return badRequest(new InvalidParamError('Email is not valid'))
         }
-        throw error
+        return serverError()
       }
 
-      return successRequest({})
+      return success({
+      })
     } catch (error) {
       return serverError()
     }
