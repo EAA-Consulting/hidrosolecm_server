@@ -8,15 +8,14 @@ export class AddAccount implements AddAccountRepository {
     return await new Promise((resolve, reject) => {
       firebird.attach(FirebirdOptions, (err, db) => {
         if (err) {
-          db.detach()
-          reject(new Error('Error on insert new user'))
+          reject(new Error('Error on insert new user')); return
         }
         const sqlInsert = 'INSERT INTO USERS (NAME, EMAIL, PASSWORD) VALUES (?,?,?) returning ID, NAME, EMAIL, PASSWORD'
         const { name, email, password } = account
 
         db.query(sqlInsert, [name, email, password], (err, result: any) => {
           if (err) {
-            reject(new Error('Error on insert new user'))
+            reject(new Error('Error on insert new user')); return
           }
           if (db) db.detach()
           resolve({
