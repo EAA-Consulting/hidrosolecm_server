@@ -1,5 +1,5 @@
 import { type SignInApplication } from '../../../Application/use-cases/interfaces/signInInterface'
-import { type AccountModel } from '../../../Domain/model/AccountModel'
+import { type AuthenticatedUser } from '../../../Application/use-cases/signup/authenticatedUser'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
@@ -13,8 +13,8 @@ interface SubTypes {
 describe('SignIn Controller', () => {
   const makeSignInApp = (): SignInApplication => {
     class SignInAppSub implements SignInApplication {
-      async handle (email: string, password: string): Promise<AccountModel> {
-        return await new Promise(resolve => { resolve({ email: 'any_email', id: 1, name: 'any_name', password: 'any_password' }) })
+      async handle (email: string, password: string): Promise<AuthenticatedUser> {
+        return await new Promise(resolve => { resolve({ token: '21341w341234', user: { email: 'any_email', id: 1, name: 'any_name', password: 'any_password' } }) })
       }
     }
     return new SignInAppSub()
@@ -49,6 +49,7 @@ describe('SignIn Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body.token).toBeTruthy()
   })
 
   it('Should return 400 in case email is not send', async () => {
