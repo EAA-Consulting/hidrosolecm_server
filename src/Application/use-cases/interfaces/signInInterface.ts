@@ -1,5 +1,5 @@
-import { type AccountModel } from '../../../Domain/model/AccountModel'
+import { type AuthenticatedUser } from '../signup/authenticatedUser'
 
 export interface SignInApplication {
-  handle: (email: string, password: string) => Promise<AccountModel>
+  handle: (email: string, password: string) => Promise<AuthenticatedUser>
 }
