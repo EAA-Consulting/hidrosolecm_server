@@ -5,6 +5,9 @@ import { EncrypterAdapter } from './encrypterAdapter'
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
     return await new Promise(resolve => { resolve('hashed_password') })
+  },
+  async compare (): Promise<boolean> {
+    return await new Promise(resolve => { resolve(true) })
   }
 }))
 
@@ -28,6 +31,20 @@ describe('Encrypter', () => {
     const sut = makeSut()
     const hash = await sut.encrypt('any_value')
     expect(hash).toBe('hashed_password')
+  })
+
+  test('Should return true if password matchs', async () => {
+    const sut = makeSut()
+    const passwordHashed = await sut.encrypt('any_value')
+    const isValid = await sut.validate('any_value', passwordHashed)
+
+    expect(isValid).toBe(true)
+  })
+
+  test('Should return false if password does not match', async () => {
+    const sut = makeSut()
+    const isValid = await sut.validate('any_value', 'wrong value')
+    expect(isValid).toBe(true)
   })
 }
 )
