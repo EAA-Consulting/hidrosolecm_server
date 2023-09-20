@@ -1,6 +1,6 @@
 import { type SignInApplication } from '../../../Application/use-cases/interfaces/signInInterface'
 import { type AuthenticatedUser } from '../../../Application/use-cases/signin/value_objects/authenticatedUser'
-import { InvalidParamError, MissingParamError } from '../../errors'
+import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { badRequest } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
 import { SignInController } from './signInController'
@@ -90,6 +90,21 @@ describe('SignIn Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('credentials'))
+  }
+  )
+  it('Should return 500 in case signup throws error', async () => {
+    const { sut, signupAppSub } = makeSut()
+    jest.spyOn(signupAppSub, 'handle').mockImplementation(() => { throw new Error() })
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password'
+      }
+    }
+
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toEqual(new ServerError())
   }
   )
 })
