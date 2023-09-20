@@ -5,3 +5,4 @@ coverage
 settings.json
 *.fdb
 databasefile
+*.key
