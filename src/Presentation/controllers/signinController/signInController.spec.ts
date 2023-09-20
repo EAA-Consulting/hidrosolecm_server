@@ -14,7 +14,7 @@ describe('SignIn Controller', () => {
   const makeSignInApp = (): SignInApplication => {
     class SignInAppSub implements SignInApplication {
       async handle (email: string, password: string): Promise<AuthenticatedUser> {
-        return await new Promise(resolve => { resolve({ token: '21341w341234', user: { email: 'any_email', id: 1, name: 'any_name', password: 'any_password' } }) })
+        return await new Promise(resolve => { resolve({ token: '21341w341234' }) })
       }
     }
     return new SignInAppSub()
