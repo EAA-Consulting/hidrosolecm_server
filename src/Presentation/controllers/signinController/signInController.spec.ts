@@ -1,5 +1,5 @@
 import { type SignInApplication } from '../../../Application/use-cases/interfaces/signInInterface'
-import { type AuthenticatedUser } from '../../../Application/use-cases/signup/value_objects/authenticatedUser'
+import { type AuthenticatedUser } from '../../../Application/use-cases/signin/value_objects/authenticatedUser'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
