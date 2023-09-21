@@ -1,4 +1,4 @@
-import { type TokenGenerator } from '../interfaces/token'
+import { type TokenGenerator } from '../../../Presentation/interfaces/token'
 import { TokenJsonWeToken } from './JsonWebToken'
 
 describe('Json Web Token Generator', () => {
