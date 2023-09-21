@@ -1,4 +1,5 @@
 import { type SignInService } from '../../../Domain/services/interfaces/signInService'
+import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignInApplication } from '../interfaces/signInInterface'
 import { SignIn } from './signIn'
 import { type AuthenticatedUser } from './value_objects/authenticatedUser'
@@ -9,6 +10,15 @@ describe('SignIn', () => {
     signInService: SignInService
   }
 
+  const makeEmailValidatorStub = (): EmailValidator => {
+    class EmailValidatorStub implements EmailValidator {
+      isValid (email: string): boolean {
+        return true
+      }
+    }
+
+    return new EmailValidatorStub()
+  }
   const makeSignInServiceStub = (): SignInService => {
     class SignInServiceStub implements SignInService {
       async handle (email: string, password: string): Promise<AuthenticatedUser> {
@@ -24,7 +34,8 @@ describe('SignIn', () => {
   }
   const makeSut = (): SubTypes => {
     const signInServiceStub = makeSignInServiceStub()
-    const sut = new SignIn(signInServiceStub)
+    const emailValidatorStub = makeEmailValidatorStub()
+    const sut = new SignIn(emailValidatorStub, signInServiceStub)
     return {
       sut,
       signInService: signInServiceStub
