@@ -107,4 +107,19 @@ describe('SignIn Controller', () => {
     expect(response.body).toEqual(new ServerError())
   }
   )
+
+  it('Should return 400 if user not found', async () => {
+    const { sut, signupAppSub } = makeSut()
+    jest.spyOn(signupAppSub, 'handle').mockImplementation(() => { throw new InvalidParamError('User not found') })
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password'
+      }
+    }
+
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new InvalidParamError('User not found'))
+  })
 })

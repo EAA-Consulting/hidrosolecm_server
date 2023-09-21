@@ -23,6 +23,9 @@ export class SignInController implements Controller {
       if (error.message.includes('credentials')) {
         return badRequest(new InvalidParamError('credentials'))
       }
+      if (error.message.includes('User not found')) {
+        return badRequest(new InvalidParamError('User not found'))
+      }
       return serverError()
     }
   }
