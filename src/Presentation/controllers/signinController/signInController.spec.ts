@@ -122,4 +122,19 @@ describe('SignIn Controller', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('User not found'))
   })
+
+  it('Should return 400 if email is not valid', async () => {
+    const { sut, signupAppSub } = makeSut()
+    jest.spyOn(signupAppSub, 'handle').mockImplementation(() => { throw new InvalidParamError('Email is not valid') })
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password'
+      }
+    }
+
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new InvalidParamError('Email is not valid'))
+  })
 })
