@@ -11,6 +11,10 @@ describe('Add Account UseCase', () => {
   }
   const makeEncrypter = (): Encrypter => {
     class EncrypterStub implements Encrypter {
+      async validate (password: string, encryptedPassword: string): Promise<boolean> {
+        return await new Promise(resolve => { resolve(true) })
+      }
+
       async encrypt (value: string): Promise<string> {
         return await new Promise(resolve => { resolve('hashed_password') })
       }
