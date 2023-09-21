@@ -75,12 +75,23 @@ describe('SignIn Service', () => {
     expect(response.token).toEqual('any_token')
   })
 
-  test("Get an errorafe if user doesn't exist", async () => {
+  test("Get an error User not found if user doesn't exist", async () => {
     const { sut, SignInRepositoryStub } = makeSut()
     jest.spyOn(SignInRepositoryStub, 'handle').mockImplementationOnce(async () => {
-      throw new Error()
+      return await new Promise((resolve, reject) => { reject(new Error('User not found')) })
     })
-    const promise = sut.handle('invalid_email', 'valid_password')
+
+    await expect(sut.handle('invalid_email', 'valid_password')).rejects.toThrow(
+      'User not found'
+    )
+  })
+
+  test('Get an error if password is invalid', async () => {
+    const { sut, encrypterStub } = makeSut()
+    jest.spyOn(encrypterStub, 'validate').mockImplementationOnce(async () => {
+      return await new Promise(resolve => { resolve(false) })
+    })
+    const promise = sut.handle('valid_email', 'invalid_password')
     await expect(promise).rejects.toThrow()
   })
 })
