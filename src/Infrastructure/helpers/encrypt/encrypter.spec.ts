@@ -33,7 +33,7 @@ describe('Encrypter', () => {
     expect(hash).toBe('hashed_password')
   })
 
-  test('Should return true if password matchs', async () => {
+  test('Should return true if password matches', async () => {
     const sut = makeSut()
     const passwordHashed = await sut.encrypt('any_value')
     const isValid = await sut.validate('any_value', passwordHashed)
