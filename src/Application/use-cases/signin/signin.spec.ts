@@ -1,4 +1,5 @@
 import { type SignInService } from '../../../Domain/services/interfaces/signInService'
+import { InvalidParamError } from '../../../Presentation/errors'
 import { type EmailValidator } from '../../../Presentation/interfaces/emailValidator'
 import { type SignInApplication } from '../interfaces/signInInterface'
 import { SignIn } from './signIn'
@@ -8,6 +9,7 @@ describe('SignIn', () => {
   interface SubTypes {
     sut: SignInApplication
     signInService: SignInService
+    emailValidatorStub: EmailValidator
   }
 
   const makeEmailValidatorStub = (): EmailValidator => {
@@ -38,7 +40,8 @@ describe('SignIn', () => {
     const sut = new SignIn(emailValidatorStub, signInServiceStub)
     return {
       sut,
-      signInService: signInServiceStub
+      signInService: signInServiceStub,
+      emailValidatorStub
     }
   }
   test('Ensure to return 200 when signIn is successful', async () => {
@@ -63,5 +66,11 @@ describe('SignIn', () => {
     const handleSpy = jest.spyOn(signInService, 'handle')
     await sut.handle('any_email', 'any_password')
     expect(handleSpy).toHaveBeenCalledWith('any_email', 'any_password')
+  })
+  test('Ensure I receive an error if email is invalid', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+
+    await expect(sut.handle('invalid_email', 'any_password')).rejects.toThrow(new InvalidParamError('Email is not valid'))
   })
 })
