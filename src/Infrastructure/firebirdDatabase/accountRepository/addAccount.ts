@@ -15,9 +15,11 @@ export class AddAccount implements AddAccountRepository {
 
         db.query(sqlInsert, [name, email, password], (err, result: any) => {
           if (err) {
-            reject(new Error('Error on insert new user')); return
+            db.detach()
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            reject(new Error('Error on insert new user' + ' ' + err)); return
           }
-          if (db) db.detach()
+          db.detach()
           resolve({
             id: result.id,
             name: result.name,
