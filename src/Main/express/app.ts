@@ -1,9 +1,9 @@
 import express from 'express'
-import setRoutes from '../routes/signupRoutes'
+import setAccountRoutes from '../routes/accountRoute'
 
 const app = express()
 
 app.use(express.json())
-setRoutes(app)
+setAccountRoutes(app)
 
 export default app
