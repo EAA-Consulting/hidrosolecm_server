@@ -13,14 +13,17 @@ export class SigIn implements SignInRepository {
         const sqlSelect = 'SELECT * FROM USERS WHERE EMAIL = ?'
         db.query(sqlSelect, [email], (err, result: any) => {
           if (err) {
+            db.detach()
             reject(new Error('Error to execute query'))
             return
           }
 
           if (result.length === 0) {
+            db.detach()
             reject(new Error('User not found'))
             return
           }
+          db.detach()
           resolve({
             id: result[0].id,
             name: result[0].name,
@@ -28,7 +31,6 @@ export class SigIn implements SignInRepository {
             password: result[0].password
 
           })
-          db.detach()
         })
       })
     })
