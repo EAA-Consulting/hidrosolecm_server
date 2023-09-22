@@ -1,5 +1,5 @@
 import { Signup as SignupApplication } from '../../Application/use-cases/signup/signup'
-import { AddAccount } from '../../Domain/services/addAccount/addAccountService'
+import { AddAccount } from '../../Domain/services/account/addAccountService'
 import { AddAccount as AddAccountRepository } from '../../Infrastructure/firebirdDatabase/accountRepository/addAccount'
 import { EncrypterAdapter } from '../../Infrastructure/helpers/encrypt/encrypterAdapter'
 import { SignUpController } from '../../Presentation/controllers/signupController/signupController'

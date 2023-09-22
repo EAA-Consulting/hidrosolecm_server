@@ -1,5 +1,5 @@
 import { SignIn as SignInApplication } from '../../Application/use-cases/signin/signIn'
-import { SignIn as SignInService } from '../../Domain/services/signIn/SignInService'
+import { SignIn as SignInService } from '../../Domain/services/account/SignInService'
 import { SigIn as SignInRepository } from '../../Infrastructure/firebirdDatabase/accountRepository/signIn'
 import { TokenJsonWeToken } from '../../Infrastructure/helpers/database/JsonWebToken'
 import { EncrypterAdapter } from '../../Infrastructure/helpers/encrypt/encrypterAdapter'
