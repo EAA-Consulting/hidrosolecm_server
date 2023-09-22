@@ -31,6 +31,9 @@ export class SignUpController implements Controller {
       if (error.message.includes('Email is not valid')) {
         return badRequest(new InvalidParamError('Email is not valid'))
       }
+      if (error.message.includes('exists')) {
+        return badRequest(new InvalidParamError('User already exists'))
+      }
       return serverError()
     }
   }

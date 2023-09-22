@@ -240,4 +240,21 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(200)
   })
+
+  test("Ensure I get error 400 and user already exists if I try to create a user with an email that's already in use", async () => {
+    const { sut, signupApplicationStub } = makeSut()
+    jest.spyOn(signupApplicationStub, 'handle').mockImplementationOnce(() => { throw new InvalidParamError('User already exists') })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new InvalidParamError('User already exists'))
+  })
 })
