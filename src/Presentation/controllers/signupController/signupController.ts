@@ -24,10 +24,9 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
       }
 
-      await this.signupApplication.handle(name, email, password)
+      const accountModel = await this.signupApplication.handle(name, email, password)
 
-      return success({
-      })
+      return success(accountModel)
     } catch (error) {
       if (error.message.includes('Email is not valid')) {
         return badRequest(new InvalidParamError('Email is not valid'))
