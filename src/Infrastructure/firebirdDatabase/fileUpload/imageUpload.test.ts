@@ -1,7 +1,7 @@
 import fs from 'fs'
 import firebird from 'node-firebird'
 import path from 'path'
-import { FirebirdOptions } from '../helpers/database/firebirdHelper'
+import { FirebirdOptions } from '../../helpers/database/firebirdHelper'
 describe('Image Upload', () => {
   beforeEach(async () => {
     firebird.attach(FirebirdOptions, (error, db) => {
