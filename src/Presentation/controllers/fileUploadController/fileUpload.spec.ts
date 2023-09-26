@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 import path from 'path'
 import { type FileUpload } from '../../../Application/use-cases/interfaces/fileUploadInterface'
-import { type FileDTO } from '../../../Domain/ValeuObjects/FileDTO'
+import { type FileDTO } from '../../../Domain/DTOs/FileDTO'
 import { MissingParamError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
 import { FileUploadController } from './fileUpload'

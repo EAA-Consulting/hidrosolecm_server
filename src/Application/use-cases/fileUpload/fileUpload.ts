@@ -1,4 +1,4 @@
-import { type FileDTO } from '../../../Domain/ValeuObjects/FileDTO'
+import { type FileDTO } from '../../../Domain/DTOs/FileDTO'
 import { type FileUploadService } from '../../../Domain/services/interfaces/fileUploadService'
 import { type FileUpload } from '../interfaces/fileUploadInterface'
 

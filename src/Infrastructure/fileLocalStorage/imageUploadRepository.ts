@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import util from 'util'
-import { type FileDTO } from '../../Domain/ValeuObjects/FileDTO'
+import { type FileDTO } from '../../Domain/DTOs/FileDTO'
 import { type FileUploadRepository } from '../../Domain/repositories/fileUpload/fileUploadRepository'
 export class ImageUploadRepository implements FileUploadRepository {
   async handle (fileName: string, data: Buffer): Promise<FileDTO> {
