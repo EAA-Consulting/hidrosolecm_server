@@ -1,12 +1,22 @@
 import FormData from 'form-data'
 import path from 'path'
+import { type FileUpload } from '../../../Application/use-cases/interfaces/fileUploadInterface'
 import { MissingParamError } from '../../errors'
 import { type Controller } from '../../interfaces/controller'
 import { FileUploadController } from './fileUpload'
 
 describe('File upload - Controller', () => {
+  const makeFileUploadStub = (): FileUpload => {
+    class FileUploadStub implements FileUpload {
+      async handle (fileName: string, data: Buffer): Promise<void> {
+        await new Promise(resolve => { resolve(null) })
+      }
+    }
+    return new FileUploadStub()
+  }
   const makeSut = (): Controller => {
-    const fileUploadController = new FileUploadController()
+    const fileUploadApp = makeFileUploadStub()
+    const fileUploadController = new FileUploadController(fileUploadApp)
 
     return fileUploadController
   }
