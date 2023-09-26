@@ -11,6 +11,6 @@ describe('LocalStorage', () => {
     const file = await readFile(pathFile)
     await imageUploadRepository.handle(fileName, file)
     const result = await imageUploadRepository.get(fileName)
-    expect(result).toEqual(file)
+    expect(result.data).toEqual(file)
   })
 })

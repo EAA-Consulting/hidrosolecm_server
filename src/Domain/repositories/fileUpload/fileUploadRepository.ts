@@ -1,4 +1,6 @@
+import { type FileDTO } from '../../ValeuObjects/FileDTO'
+
 export interface FileUploadRepository {
-  handle: (fileName: string, data: Buffer) => Promise<void>
-  get: (fileName: string) => Promise<Buffer>
+  handle: (fileName: string, data: Buffer) => Promise<FileDTO>
+  get: (fileName: string) => Promise<FileDTO>
 }

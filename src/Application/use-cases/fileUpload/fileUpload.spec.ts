@@ -1,3 +1,4 @@
+import { type FileDTO } from '../../../Domain/ValeuObjects/FileDTO'
 import { type FileUploadRepository } from '../../../Domain/repositories/fileUpload/fileUploadRepository'
 import { FileUploadService } from '../../../Domain/services/fileUpload/fileUploadService'
 import { type FileUpload } from '../interfaces/fileUploadInterface'
@@ -11,12 +12,22 @@ interface Subtypes {
 describe('File Upload Use Case', () => {
   const makeFileUploadRepositoryStub = (): FileUploadRepository => {
     class FileUploadRepositoryStub implements FileUploadRepository {
-      async handle (fileName: string, data: Buffer): Promise<void> {
-
+      async handle (fileName: string, data: Buffer): Promise<FileDTO> {
+        return await new Promise(resolve => {
+          resolve({
+            data: Buffer.from('any_buffer'),
+            filePathName: 'any_file_name'
+          })
+        })
       }
 
-      async get (imageName: string): Promise<Buffer> {
-        return await new Promise((resolve) => { resolve(Buffer.from('any_buffer')) })
+      async get (imageName: string): Promise<FileDTO> {
+        return await new Promise((resolve) => {
+          resolve({
+            data: Buffer.from('any_buffer'),
+            filePathName: 'any_file_name'
+          })
+        })
       }
     }
     return new FileUploadRepositoryStub()

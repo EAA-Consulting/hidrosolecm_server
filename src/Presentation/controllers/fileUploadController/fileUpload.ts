@@ -11,7 +11,7 @@ export class FileUploadController implements Controller {
       return badRequest(new MissingParamError('There is not file associated with the request'))
     }
 
-    await this.fileUploadApplication.handle(file.originalname, file.buffer)
-    return success()
+    const fileUpload = await this.fileUploadApplication.handle(file.originalname, file.buffer)
+    return success(fileUpload)
   }
 }
