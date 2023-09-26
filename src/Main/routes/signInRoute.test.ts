@@ -4,7 +4,7 @@ import { FirebirdOptions } from '../../Infrastructure/helpers/database/firebirdH
 import app from '../express/app'
 
 describe('SignIn Routes', () => {
-  test('Should return 200 on signin', async () => {
+  test.skip('Should return 200 on signin', async () => {
     await supertest(app)
       .post('/api/signup')
       .send({

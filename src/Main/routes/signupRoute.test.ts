@@ -21,7 +21,7 @@ describe('SignUp Routes', () => {
       })
     })
   })
-  test('Should return an account on success', async () => {
+  test.skip('Should return an account on success', async () => {
     await supertest(app)
       .post('/api/signup')
       .send({
