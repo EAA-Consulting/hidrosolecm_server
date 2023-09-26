@@ -22,7 +22,7 @@ describe('Image Upload', () => {
     })
   })
   test('should upload image', () => {
-    const file = path.join(__dirname, '..', '..', '..', 'firebirdlogo.png')
+    const file = path.join(__dirname, '..', '..', '..', '..', 'firebirdlogo.png')
     const image = fs.readFileSync(file)
     const imageName = path.basename(file)
     firebird.attach(FirebirdOptions, (error, db) => {
@@ -48,6 +48,7 @@ describe('Image Upload', () => {
             console.error(error)
           }
           expect(result[0].name).toBe(imageName)
+          expect(result[0].photo).toEqual(image)
           db.detach()
         })
       })
