@@ -6,3 +6,4 @@ settings.json
 *.fdb
 databasefile
 *.key
+/src/images
