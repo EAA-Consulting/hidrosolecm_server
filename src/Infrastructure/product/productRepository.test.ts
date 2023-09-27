@@ -1,5 +1,5 @@
 import firebird from 'node-firebird'
-import { type ProductRepositoryInterface } from '../../Domain/repositories/product/productRepository'
+import { type IProductRepository } from '../../Domain/repositories/product/productRepository'
 import { FirebirdOptions } from '../helpers/database/firebirdHelper'
 import { ProductRepository } from './productRepository'
 describe('Product Repository', () => {
@@ -29,7 +29,7 @@ describe('Product Repository', () => {
       })
     })
   })
-  const makeProductRepository = (): ProductRepositoryInterface => {
+  const makeProductRepository = (): IProductRepository => {
     return new ProductRepository()
   }
   test.skip('Ensure I can save a product in the database', async () => {

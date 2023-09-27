@@ -1,9 +1,9 @@
 import firebird from 'node-firebird'
 import { type ProductDTO } from '../../Domain/DTOs/ProductDTO'
 import { type ProductModel } from '../../Domain/model/ProductModel'
-import { type ProductRepositoryInterface } from '../../Domain/repositories/product/productRepository'
+import { type IProductRepository } from '../../Domain/repositories/product/productRepository'
 import { FirebirdOptions } from '../helpers/database/firebirdHelper'
-export class ProductRepository implements ProductRepositoryInterface {
+export class ProductRepository implements IProductRepository {
   async handle (product: ProductDTO): Promise<ProductModel> {
     return await new Promise((resolve, reject) => {
       firebird.attach(FirebirdOptions, function (err, db) {

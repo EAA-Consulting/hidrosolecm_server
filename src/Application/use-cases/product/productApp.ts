@@ -1,10 +1,10 @@
 import { type ProductDTO } from '../../../Domain/DTOs/ProductDTO'
 import { type ProductModel } from '../../../Domain/model/ProductModel'
-import { type ProductRepositoryInterface } from '../../../Domain/repositories/product/productRepository'
-import { type ProductApplicationInterface } from '../interfaces/productInterface'
+import { type IProductRepository } from '../../../Domain/repositories/product/productRepository'
+import { type IProductApplication } from '../interfaces/productInterface'
 
-export class ProductApplication implements ProductApplicationInterface {
-  constructor (private readonly productRepository: ProductRepositoryInterface) {
+export class ProductApplication implements IProductApplication {
+  constructor (private readonly productRepository: IProductRepository) {
 
   }
 
