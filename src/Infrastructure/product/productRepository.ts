@@ -32,7 +32,8 @@ export class ProductRepository implements IProductRepository {
                 description: product.description,
                 altText: product.altText,
                 imagePath: product.imagePath,
-                storeCode: product.storeCode
+                storeCode: product.storeCode,
+                name: product.name
 
               })
             })

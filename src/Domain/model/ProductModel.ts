@@ -4,4 +4,5 @@ export interface ProductModel {
   description: string
   altText: string
   imagePath: string
+  name: string
 }

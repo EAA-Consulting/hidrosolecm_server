@@ -3,4 +3,5 @@ export interface ProductDTO {
   description: string
   altText: string
   imagePath: string
+  name: string
 }
