@@ -16,8 +16,8 @@ export class ProductRepository implements IProductRepository {
             reject(err)
             return
           }
-          const sqlInsert = 'INSERT INTO PRODUCT (DESCRIPTION, ALTTEXT, IMAGEPATH, STORECODE) VALUES (?, ?, ?, ?) RETURNING ID'
-          transaction.query(sqlInsert, [product.description, product.altText, product.imagePath, product.storeCode], function (err, result: any) {
+          const sqlInsert = 'INSERT INTO PRODUCT (DESCRIPTION, ALTTEXT, IMAGEPATH, STORECODE, NAME) VALUES (?, ?, ?, ?, ?) RETURNING ID'
+          transaction.query(sqlInsert, [product.description, product.altText, product.imagePath, product.storeCode, product.name], function (err, result: any) {
             if (err) {
               reject(err)
               return
