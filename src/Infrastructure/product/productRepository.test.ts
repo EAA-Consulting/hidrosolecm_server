@@ -39,7 +39,8 @@ describe('Product Repository', () => {
       description: 'any_description',
       altText: 'any_altText',
       imagePath: 'any_imagePath',
-      storeCode: '23514'
+      storeCode: '23514',
+      name: 'any_name'
 
     }
     const result = await sut.handle(productDto)
