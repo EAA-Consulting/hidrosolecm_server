@@ -5,25 +5,24 @@ import { FirebirdOptions } from '../../helpers/database/firebirdHelper'
 export class SigIn implements SignInRepository {
   async handle (email: string): Promise<AccountModel> {
     return await new Promise((resolve, reject) => {
-      Firebird.attach(FirebirdOptions, (err, db) => {
+      const pool = Firebird.pool(10, FirebirdOptions)
+
+      pool.get(function (err, connection) {
         if (err) {
-          reject(new Error('Error to connect to database'))
+          reject(new Error('Error on getting connection'))
           return
         }
         const sqlSelect = 'SELECT * FROM USERS WHERE EMAIL = ?'
-        db.query(sqlSelect, [email], (err, result: any) => {
+        connection.query(sqlSelect, [email], function (err, result: any) {
           if (err) {
-            db.detach()
             reject(new Error('Error to execute query'))
             return
           }
 
           if (result.length === 0) {
-            db.detach()
             reject(new Error('User not found'))
             return
           }
-          db.detach()
           resolve({
             id: result[0].id,
             name: result[0].name,
