@@ -5,6 +5,11 @@ import { type FileDTO } from '../../Domain/DTOs/FileDTO'
 import { type FileUploadRepository } from '../../Domain/repositories/fileUpload/fileUploadRepository'
 export class ImageUploadRepository implements FileUploadRepository {
   async handle (fileName: string, data: Buffer): Promise<FileDTO> {
+    // check if the filename exists
+    if (fs.existsSync(fileName)) {
+      return await this.get(fileName)
+    }
+
     const writeFile = util.promisify(fs.writeFile)
     const pathFile = path.join(__dirname, '..', '..', 'images', fileName)
     await writeFile(pathFile, data)
