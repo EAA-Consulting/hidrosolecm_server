@@ -4,4 +4,5 @@ export interface ProductDTO {
   altText: string
   imagePath: string
   name: string
+  category: string
 }
