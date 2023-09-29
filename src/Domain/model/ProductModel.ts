@@ -5,4 +5,5 @@ export interface ProductModel {
   altText: string
   imagePath: string
   name: string
+  category: string
 }
