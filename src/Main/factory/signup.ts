@@ -1,7 +1,7 @@
 import { Signup as SignupApplication } from '../../Application/use-cases/signup/signup'
 import { AddAccount } from '../../Domain/services/account/addAccountService'
-import { AddAccount as AddAccountRepository } from '../../Infrastructure/firebirdDatabase/accountRepository/addAccount'
 import { EncrypterAdapter } from '../../Infrastructure/helpers/encrypt/encrypterAdapter'
+import { AddAccount as AddAccountRepository } from '../../Infrastructure/mySqlDatabase/accountRepository/addAccount'
 import { SignUpController } from '../../Presentation/controllers/signupController/signupController'
 import { type Controller } from '../../Presentation/interfaces/controller'
 import { EmailValidatorAdapter } from '../../Presentation/utils/EmailValidatorAdapter'
