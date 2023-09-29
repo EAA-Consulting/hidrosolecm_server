@@ -1,11 +1,33 @@
-import Firebird from 'node-firebird'
+import { after } from 'node:test'
 import supertest from 'supertest'
-import { FirebirdOptions } from '../../Infrastructure/helpers/database/firebirdHelper'
+import { MySqlHelper } from '../../Infrastructure/helpers/database/mysqlHelper'
 import app from '../express/app'
 
 describe('SignIn Routes', () => {
-  test.skip('Should return 200 on signin', async () => {
-    await supertest(app)
+  beforeAll(() => {
+    MySqlHelper.openConnection()
+  })
+  after(() => {
+    const pool = MySqlHelper.pool
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log(err)
+        return
+      }
+      connection.query('DELETE FROM users WHERE EMAIL = ?', ['testesignin@teste.com.br'], (err, result: any) => {
+        if (err) {
+          console.log(err)
+          connection.release()
+          return
+        }
+        connection.release()
+      })
+    })
+
+    MySqlHelper.pool.end()
+  })
+  test('Should return 200 on signin', async () => {
+    const responseSignin = await supertest(app)
       .post('/api/signup')
       .send({
         name: 'testesignin',
@@ -13,31 +35,17 @@ describe('SignIn Routes', () => {
         password: '123456',
         passwordConfirmation: '123456'
       })
-      .expect(200)
+    expect(responseSignin.status).toBe(200)
+
     const httpResponse = await supertest(app)
       .get('/api/signIn')
       .send({
         email: 'testesignin@teste.com.br',
         password: '123456'
       })
+
     expect(httpResponse.status).toBe(200)
     expect(httpResponse.body.token).toBeTruthy()
-
-    Firebird.attach(FirebirdOptions, (err, db) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      const sqlInsert = 'DELETE FROM USERS WHERE EMAIL = ?'
-      db.query(sqlInsert, ['testesignin@teste.com.br'], (err, result: any) => {
-        if (err) {
-          db.detach()
-          console.log(err)
-          return
-        }
-        db.detach()
-      })
-    })
   })
 
   test('Should return invalid email or password', async () => {
