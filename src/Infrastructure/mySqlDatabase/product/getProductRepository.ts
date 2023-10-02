@@ -11,7 +11,7 @@ export class GetProductRepository implements IGetProductRepository {
           reject(new Error('Error on getting connection'))
           return
         }
-        const sqlSelect = 'SELECT * FROM PRODUCT'
+        const sqlSelect = 'SELECT * FROM product'
         connection.query(sqlSelect, [], (err, result) => {
           if (err) {
             connection.release()
