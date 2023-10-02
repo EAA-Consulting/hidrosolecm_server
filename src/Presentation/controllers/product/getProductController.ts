@@ -1,4 +1,4 @@
-import { type IGetProduct } from '../../../Application/use-cases/interfaces/getProduct'
+import { type IGetProduct } from '../../../Application/use-cases/interfaces/getProductInterface'
 import { serverError, success } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
 import { type HttpRequest, type HttpResponse } from '../../interfaces/http'

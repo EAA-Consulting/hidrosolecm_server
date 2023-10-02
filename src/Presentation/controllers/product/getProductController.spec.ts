@@ -1,4 +1,4 @@
-import { type IGetProduct } from '../../../Application/use-cases/interfaces/getProduct'
+import { type IGetProduct } from '../../../Application/use-cases/interfaces/getProductInterface'
 import { GetProductApplication } from '../../../Application/use-cases/product/getProductApp'
 import { type ProductModel } from '../../../Domain/model/ProductModel'
 import { type IGetProductRepository } from '../../../Domain/repositories/product/getProductRepository'
