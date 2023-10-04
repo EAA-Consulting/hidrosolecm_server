@@ -6,4 +6,5 @@ export interface HttpResponse {
 export interface HttpRequest {
   file?: any
   body?: any
+  params?: any
 }
