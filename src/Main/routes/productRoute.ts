@@ -8,5 +8,5 @@ export default (app: Express): void => {
   router.post('/product', expressAdapterController(makeAddProductController()))
   router.get('/product', expressAdapterController(makeGetProductController()))
   router.put('/product', expressAdapterController(makeUpdateProductController()))
-  router.delete('/product', expressAdapterController(makeDeleteProductController()))
+  router.delete('/product/:productId', expressAdapterController(makeDeleteProductController()))
 }
