@@ -8,12 +8,12 @@ export class DeleteProductController implements Controller {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { productId } = httpRequest.body
+    const productId = httpRequest.params.productId
 
     if (!productId) {
       return badRequest(new Error('Missing param: productId'))
     }
-    await this.deleteProductController.handle(httpRequest.body.productId)
+    await this.deleteProductController.handle(productId)
     return success()
   }
 }
