@@ -10,7 +10,7 @@ describe('SignUp Routes', () => {
       if (err) {
         console.error(err)
       }
-      const sqlInsert = 'DELETE FROM USERS WHERE EMAIL = ?'
+      const sqlInsert = 'DELETE FROM users WHERE EMAIL = ?'
       connection.query(sqlInsert, ['signuproute@teste.com.br'], function (err, result) {
         if (err) {
           console.error(err)
