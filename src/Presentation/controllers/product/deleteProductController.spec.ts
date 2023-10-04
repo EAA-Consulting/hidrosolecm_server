@@ -18,7 +18,7 @@ describe('Delete ProductController', () => {
   test('Ensure I got error 400 if I dont pass a product number', async () => {
     const sut = makeSut()
     const httpRequest = {
-      body: {
+      params: {
         productId: ''
       }
     }
@@ -31,7 +31,7 @@ describe('Delete ProductController', () => {
   test('Ensure I delete a product', async () => {
     const sut = makeSut()
     const httpRequest = {
-      body: {
+      params: {
         productId: 1
       }
     }
