@@ -1,7 +1,7 @@
 import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { type IS3DeleteImageRepository } from '../../Domain/repositories/fileUpload/s3DeleteImageRepository'
+import { type IDeleteImageRepository } from '../../Domain/repositories/fileUpload/deleteImageRepository'
 import { S3Config } from '../helpers/aws/S3Helper'
-export class S3DeleteImageRepository implements IS3DeleteImageRepository {
+export class S3DeleteImageRepository implements IDeleteImageRepository {
   async handle (fileName: string): Promise<boolean> {
     const client = new S3Client({
       ...S3Config
