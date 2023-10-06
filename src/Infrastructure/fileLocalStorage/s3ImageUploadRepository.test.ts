@@ -11,6 +11,6 @@ describe('S3 Image Upload Repository', () => {
     const fileName = path.basename(pathFile)
 
     const response = await s3ImageRepository.handle(fileName, file)
-    expect(response.fileName).toBe(fileName)
+    expect(response.filePathName).toBe(fileName)
   })
 })
