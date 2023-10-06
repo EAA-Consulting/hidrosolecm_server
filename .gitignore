@@ -7,3 +7,4 @@ settings.json
 databasefile
 *.key
 /src/images
+*.csv
