@@ -5,7 +5,7 @@ import { ImageUploadRepository } from './imageUploadRepository'
 describe('LocalStorage', () => {
   test('Should save file in the localStoarge', async () => {
     const imageUploadRepository = new ImageUploadRepository()
-    const pathFile = path.join(__dirname, '..', '..', 'images', 'firebirdlogo.png')
+    const pathFile = path.join(__dirname, '..', '..', '..', 'firebirdlogo.png')
     const fileName = path.basename(pathFile)
     const readFile = util.promisify(fs.readFile)
     const file = await readFile(pathFile)
