@@ -7,8 +7,7 @@ describe('SignIn Routes', () => {
     MySqlHelper.openConnection()
   })
   afterAll(() => {
-    const pool = MySqlHelper.pool
-    pool.getConnection(function (err, connection) {
+    MySqlHelper.pool.getConnection(function (err, connection) {
       if (err) {
         console.log(err)
         return
