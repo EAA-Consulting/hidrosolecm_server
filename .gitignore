@@ -5,6 +5,6 @@ coverage
 settings.json
 *.fdb
 databasefile
-*.key
+private.key
 /src/images
 *.csv
