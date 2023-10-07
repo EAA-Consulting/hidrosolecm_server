@@ -1,4 +1,3 @@
-import { after } from 'node:test'
 import supertest from 'supertest'
 import { MySqlHelper } from '../../Infrastructure/helpers/database/mysqlHelper'
 import app from '../express/app'
@@ -7,7 +6,7 @@ describe('SignIn Routes', () => {
   beforeAll(() => {
     MySqlHelper.openConnection()
   })
-  after(() => {
+  afterAll(() => {
     const pool = MySqlHelper.pool
     pool.getConnection(function (err, connection) {
       if (err) {

@@ -8,11 +8,16 @@ export const expressAdapterController = (controller: Controller): RequestHandler
     const httpRequest = {
       body: req.body,
       file: req.file,
-      params: req.params
+      params: req.params,
+      headers: req.headers
 
     }
 
-    const httpResponse = await controller.handle(httpRequest)
-    res.status(httpResponse.statusCode).json(httpResponse.body)
+    try {
+      const httpResponse = await controller.handle(httpRequest)
+      res.status(httpResponse.statusCode).json(httpResponse.body)
+    } catch (error) {
+
+    }
   }
 }
