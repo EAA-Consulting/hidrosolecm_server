@@ -3,10 +3,8 @@ import { MySqlHelper } from '../../Infrastructure/helpers/database/mysqlHelper'
 import app from '../express/app'
 
 describe('SignIn Routes', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     MySqlHelper.openConnection()
-  })
-  afterAll(() => {
     MySqlHelper.pool.getConnection(function (err, connection) {
       if (err) {
         console.log(err)
@@ -16,14 +14,11 @@ describe('SignIn Routes', () => {
         if (err) {
           console.log(err)
           connection.release()
-          return
         }
-        connection.release()
       })
     })
-
-    MySqlHelper.pool.end()
   })
+
   test('Should return 200 on signin', async () => {
     const responseSignin = await supertest(app)
       .post('/api/signup')
