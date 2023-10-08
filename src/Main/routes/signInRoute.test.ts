@@ -13,7 +13,6 @@ describe('SignIn Routes', () => {
       connection.query('DELETE FROM users WHERE EMAIL = ?', ['testesignin@teste.com.br'], (err, result: any) => {
         if (err) {
           console.log(err)
-          connection.release()
         }
       })
     })

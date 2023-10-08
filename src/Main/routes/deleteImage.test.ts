@@ -16,13 +16,9 @@ describe('Delete Image Route', () => {
       connection.query('DELETE FROM users WHERE EMAIL = ?', ['testesignin@teste.com.br'], (err, result: any) => {
         if (err) {
           console.log(err)
-          connection.release()
-          return
         }
-        connection.release()
       })
     })
-    MySqlHelper.closeConnection()
   })
   test('Ensure I can delete an image by name', async () => {
     const responseSignin = await supertest(app)
