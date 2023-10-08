@@ -10,7 +10,7 @@ export class UpdateProductRepository implements IUpdateProductRepository {
         if (err) {
           reject(new Error('Error on getting connection'))
         }
-        const sqlUpdate = 'UPDATE products SET storeCode = ?, description = ?, altText = ?, imagePath = ?, name = ?, category = ? WHERE id = ?'
+        const sqlUpdate = 'UPDATE product SET storeCode = ?, description = ?, altText = ?, imagePath = ?, name = ?, category = ? WHERE id = ?'
         connection.query(sqlUpdate, [product.storeCode, product.description, product.altText, product.imagePath, product.name, product.category, product.productId], (err, result: any) => {
           if (err) {
             connection.release()
