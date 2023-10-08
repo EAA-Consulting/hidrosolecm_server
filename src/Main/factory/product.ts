@@ -9,6 +9,7 @@ import { UpdateProductRepository } from '../../Infrastructure/mySqlDatabase/prod
 import { AddProductController } from '../../Presentation/controllers/product/addProductController'
 import { DeleteProductController } from '../../Presentation/controllers/product/deleteProductController'
 import { GetProductController } from '../../Presentation/controllers/product/getProductController'
+import { UpdateProductController } from '../../Presentation/controllers/product/updateProductController'
 import { type Controller } from '../../Presentation/interfaces/controller'
 
 export const makeAddProductController = (): Controller => {
@@ -36,5 +37,5 @@ export const makeUpdateProductController = (): Controller => {
   const productRepository = new UpdateProductRepository()
   const productApplication = new UpdateProductApp(productRepository)
 
-  return new AddProductController(productApplication)
+  return new UpdateProductController(productApplication)
 }
