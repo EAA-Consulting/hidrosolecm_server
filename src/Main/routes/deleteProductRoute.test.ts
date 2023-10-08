@@ -9,7 +9,7 @@ describe('Delete route', () => {
     MySqlHelper.closeConnection()
   })
   test('Should return 200 on delete', async () => {
-    const signinResponse = await supertest(app).get('/api/signin').send({
+    const signinResponse = await supertest(app).post('/api/signin').send({
       email: 'teste@email.com',
       password: '123456'
     })

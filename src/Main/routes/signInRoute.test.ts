@@ -31,7 +31,7 @@ describe('SignIn Routes', () => {
     expect(responseSignin.status).toBe(200)
 
     const httpResponse = await supertest(app)
-      .get('/api/signIn')
+      .post('/api/signIn')
       .send({
         email: 'testesignin@teste.com.br',
         password: '123456'
@@ -43,7 +43,7 @@ describe('SignIn Routes', () => {
 
   test('Should return invalid email or password', async () => {
     const httpResponse = await supertest(app)
-      .get('/api/signIn')
+      .post('/api/signIn')
       .send({
         email: 'novalid@teste.com.br',
         password: '123456'

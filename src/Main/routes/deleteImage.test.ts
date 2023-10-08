@@ -35,7 +35,7 @@ describe('Delete Image Route', () => {
       })
 
     expect(responseSignin.status).toBe(200)
-    const signinResponse = await supertest(app).get('/api/signin').send({
+    const signinResponse = await supertest(app).post('/api/signin').send({
       email: 'teste@email.com',
       password: '123456'
     })
