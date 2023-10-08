@@ -46,7 +46,7 @@ export class ProductRepository implements IProductRepository {
                 }
                 connection.release()
                 resolve({
-                  id: result.insertedId,
+                  id: result.insertId,
                   description: product.description,
                   altText: product.altText,
                   imagePath: product.imagePath,
