@@ -6,5 +6,5 @@ export default (app: Express): void => {
   const router = Router()
   app.use('/api', router)
   router.post('/signup', expressAdapterController(makeSignupController()))
-  router.get('/signIn', expressAdapterController(makeSignInController()))
+  router.post('/signIn', expressAdapterController(makeSignInController()))
 }
