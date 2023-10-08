@@ -15,7 +15,6 @@ describe('SignUp Routes', () => {
         if (err) {
           console.error(err)
         }
-        connection.release()
       })
     })
   })
