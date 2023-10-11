@@ -6,11 +6,11 @@ import app from '../Main/express/app'
 dotenv.config()
 
 const port = process.env.PORT ?? 3333
-const env = process.env.NODE_ENV === 'development' ? 'http://localhost' : 'https://localhost'
+const env = process.env.HOST_ENV === 'dev' ? 'http://localhost' : 'https://localhost'
 MySqlHelper.openConnection()
 // make it to run also on https
-
-if (process.env.NODE_ENV === 'development ') {
+const nodeEnv = process.env.HOST_ENV ?? ''
+if (nodeEnv === 'dev') {
   app.listen(port, () => { console.log(`Server running at ${env}:${port}`) })
 } else {
   const secPath = process.env.SEC_PATH ?? ''
@@ -18,8 +18,7 @@ if (process.env.NODE_ENV === 'development ') {
     key: fs.readFileSync(`${secPath}/privkey.pem`),
     cert: fs.readFileSync(`${secPath}/cert.pem`)
   }
-  console.log(`options 1 ${fs.readFileSync(`${secPath}/privkey.pem`).toString()}`)
-  console.log(`options 2 ${fs.readFileSync(`${secPath}/cert.pem`).toString()}`)
+
   const httpServer = https.createServer(options, app)
   httpServer.listen(port, () => { console.log(`Server running at ${env}:${port}`) })
 }
