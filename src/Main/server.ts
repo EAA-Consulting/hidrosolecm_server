@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development ') {
 } else {
   const secPath = process.env.SEC_PATH ?? ''
   const options = {
-    key: fs.readFileSync(`${secPath}/private.key`),
+    key: fs.readFileSync(`${secPath}/privatekey.pem`),
     cert: fs.readFileSync(`${secPath}/cert.pem`)
   }
   const httpServer = https.createServer(options, app)
