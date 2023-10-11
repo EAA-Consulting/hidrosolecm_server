@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import fs from 'fs'
 import https from 'https'
 import { MySqlHelper } from '../Infrastructure/helpers/database/mysqlHelper'
 import app from '../Main/express/app'
@@ -14,8 +15,8 @@ if (process.env.NODE_ENV === 'development ') {
 } else {
   const secPath = process.env.SEC_PATH ?? ''
   const options = {
-    key: `${secPath}/private.key`,
-    cert: `${secPath}/cert.pem`
+    key: fs.readFileSync(`${secPath}/private.key`),
+    cert: fs.readFileSync(`${secPath}/cert.pem`)
   }
   const httpServer = https.createServer(options, app)
   httpServer.listen(port, () => { console.log(`Server running at ${env}:${port}`) })
