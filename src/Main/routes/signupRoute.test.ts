@@ -22,7 +22,7 @@ describe('SignUp Routes', () => {
     MySqlHelper.closeConnection()
   })
   test('Should return an account on success', async () => {
-    await supertest(app)
+    const response = await supertest(app)
       .post('/api/signup')
       .send({
         name: 'nodetest',
@@ -30,6 +30,8 @@ describe('SignUp Routes', () => {
         password: '123456',
         passwordConfirmation: '123456'
       })
-      .expect(200)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('admin')
   })
 })
