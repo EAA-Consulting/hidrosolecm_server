@@ -18,7 +18,8 @@ const makeSignUpApplication = (): SignUpApplication => {
           id: 1,
           name,
           email,
-          password
+          password,
+          admin: false
         })
       })
     }
@@ -64,7 +65,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(200)
   })
 
-  test('Should return 200 all fields are passed', async () => {
+  test('Should return 200 and get account returned', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -77,6 +78,12 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
+    expect(httpRequest.body).toEqual({
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
+    })
   })
 
   test('Ensure SignUpController calls EmailValidator with correct email', async () => {
