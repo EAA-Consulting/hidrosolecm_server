@@ -17,7 +17,7 @@ export class AddAccount implements AddAccountRepository {
             mysqlConnection.release()
             reject(new Error('Error on insert new user')); return
           }
-          mysqlConnection.query('SELECT name, email, password FROM users WHERE ID = ?', [result.insertId], (error, selectResult: any, fields: any) => {
+          mysqlConnection.query('SELECT name, email, password, admin FROM users WHERE ID = ?', [result.insertId], (error, selectResult: any, fields: any) => {
             if (error) {
               mysqlConnection.release()
               reject(new Error('Error on insert new user')); return
@@ -30,7 +30,8 @@ export class AddAccount implements AddAccountRepository {
                 id: result.insertId,
                 name: selectResult[0].name,
                 email: selectResult[0].email,
-                password: selectResult[0].password
+                password: selectResult[0].password,
+                admin: selectResult[0].admin
 
               })
             }

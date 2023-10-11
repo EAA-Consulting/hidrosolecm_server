@@ -26,7 +26,8 @@ export class SigIn implements SignInRepository {
             id: result[0].id,
             name: result[0].name,
             email: result[0].email,
-            password: result[0].password
+            password: result[0].password,
+            admin: result[0].admin
 
           }
           resolve(accountModel)
