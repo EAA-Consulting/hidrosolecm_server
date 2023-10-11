@@ -11,7 +11,12 @@ export class SignIn implements SignInApplication {
     if (!this.emailValidator.isValid(email)) {
       throw new InvalidParamError('Email is not valid')
     }
-
-    return await this.signInService.handle(email, password)
+    try {
+      return await this.signInService.handle(email, password)
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      console.log(`Error ${error}`)
+      throw new Error(error)
+    }
   }
 }
