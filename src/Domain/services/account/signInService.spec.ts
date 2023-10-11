@@ -34,7 +34,8 @@ describe('SignIn Service', () => {
             id: 1,
             name: 'valid_name',
             email: 'valid_email',
-            password: 'hashed_password'
+            password: 'hashed_password',
+            admin: false
 
           })
         })

@@ -18,7 +18,8 @@ describe('Signup Services', () => {
             id: 1,
             name: 'any_name',
             email: 'any_email',
-            password: 'any_password'
+            password: 'any_password',
+            admin: false
           })
         })
       }
