@@ -18,6 +18,8 @@ if (process.env.NODE_ENV === 'development ') {
     key: fs.readFileSync(`${secPath}/privkey.pem`),
     cert: fs.readFileSync(`${secPath}/cert.pem`)
   }
+  console.log(`options 1 ${fs.readFileSync(`${secPath}/privkey.pem`).toString()}`)
+  console.log(`options 2 ${fs.readFileSync(`${secPath}/cert.pem`).toString()}`)
   const httpServer = https.createServer(options, app)
   httpServer.listen(port, () => { console.log(`Server running at ${env}:${port}`) })
 }
