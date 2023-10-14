@@ -5,7 +5,7 @@ describe('Add Product Route', () => {
   beforeAll(() => {
     MySqlHelper.openConnection()
   })
-  test('Ensure I can create a product without store code', async () => {
+  test('Ensure I can create a product without name', async () => {
     const signinResponse = await request(app).post('/api/signin').send({
       email: 'teste@email.com',
       password: '123456'
@@ -15,14 +15,14 @@ describe('Add Product Route', () => {
     const response = await request(app).post('/api/product')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        description: 'any null',
-        altText: 'any_null',
-        imagePath: 'any_null',
-        name: 'any_null',
-        category: 'jardim'
+        description: 'any nullnew',
+        altText: 'any_nullnullnew',
+        imagePath: 'any_nullnullnew',
+        storeCode: 'any',
+        category: 'jardimnullnew'
       })
 
     expect(response.status).toBe(200)
-    expect(response.body.storeCode).toBe(null)
+    expect(response.body.name).toBeFalsy()
   })
 })

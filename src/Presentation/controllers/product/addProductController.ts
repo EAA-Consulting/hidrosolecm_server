@@ -10,7 +10,7 @@ export class AddProductController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const productDTO = httpRequest.body
-      const requiredFields = ['description', 'altText', 'imagePath', 'name', 'category']
+      const requiredFields = ['description', 'altText', 'imagePath', 'storeCode', 'category']
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
           return {

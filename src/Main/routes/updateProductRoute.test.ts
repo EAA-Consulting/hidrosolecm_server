@@ -6,7 +6,7 @@ describe('Update product Route', () => {
     MySqlHelper.openConnection()
   })
 
-  test('Ensure I can update a product', async () => {
+  test('Ensure I can update a product withou name', async () => {
     const signinResponse = await supertest(app).post('/api/signin').send({
       email: 'teste@email.com',
       password: '123456'
@@ -18,7 +18,7 @@ describe('Update product Route', () => {
       .send(
         {
           productId: 390,
-          name: 'C-23',
+          storeCode: '1234',
           description: 'Torneira de Jardim Longa 3/4 Cromada',
           category: 'Jardim',
           imagePath: '1130_34_torneira_jardim_longa_cr_c23.jpg',
@@ -30,7 +30,7 @@ describe('Update product Route', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual({
       id: 390,
-      name: 'C-23',
+      storeCode: '1234',
       description: 'Torneira de Jardim Longa 3/4 Cromada',
       category: 'Jardim',
       imagePath: '1130_34_torneira_jardim_longa_cr_c23.jpg',

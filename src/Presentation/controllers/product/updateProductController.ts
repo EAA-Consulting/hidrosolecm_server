@@ -11,7 +11,7 @@ export class UpdateProductController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { productId, storeCode, description, altText, imagePath, name, category } = httpRequest.body
-    const requiredFields = ['productId', 'description', 'altText', 'imagePath', 'name', 'category']
+    const requiredFields = ['productId', 'description', 'altText', 'imagePath', 'storeCode', 'category']
     for (const field of requiredFields) {
       if (!httpRequest.body[field]) {
         return {
