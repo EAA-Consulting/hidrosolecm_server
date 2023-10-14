@@ -10,6 +10,15 @@ export class AddProductController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const productDTO = httpRequest.body
+      const requiredFields = ['description', 'altText', 'imagePath', 'name', 'category']
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return {
+            statusCode: 400,
+            body: new Error(`Missing param: ${field}`)
+          }
+        }
+      }
       const product = await this.productApplication.handle(productDTO)
       return success(product)
     } catch (error) {
