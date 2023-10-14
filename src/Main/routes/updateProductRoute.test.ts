@@ -18,7 +18,6 @@ describe('Update product Route', () => {
       .send(
         {
           productId: 390,
-          storeCode: '1130',
           name: 'C-23',
           description: 'Torneira de Jardim Longa 3/4 Cromada',
           category: 'Jardim',
@@ -29,5 +28,13 @@ describe('Update product Route', () => {
       )
 
     expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      id: 390,
+      name: 'C-23',
+      description: 'Torneira de Jardim Longa 3/4 Cromada',
+      category: 'Jardim',
+      imagePath: '1130_34_torneira_jardim_longa_cr_c23.jpg',
+      altText: 'Torneira de Jardim Longa 3/4 Cromada'
+    })
   })
 })
