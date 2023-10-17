@@ -13,5 +13,5 @@ export const success = (data?: any): HttpResponse => ({
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
-  body: new ServerError(error?.stack)
+  body: new ServerError(error.message, error?.stack)
 })
