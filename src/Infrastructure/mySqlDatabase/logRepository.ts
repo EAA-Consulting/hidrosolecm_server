@@ -8,7 +8,7 @@ export class LogRepository implements ILogErrorRepository {
           reject(new Error('Error on getting connection'))
           return
         }
-        const sql = 'INSERT INTO logs (logDate, stack, message) VALUES (?, ?)'
+        const sql = 'INSERT INTO logs (logDate, stack, message) VALUES (?, ?, ?)'
         const params = [new Date().toUTCString(), stack, message]
         connection.query(sql, params, (err, result) => {
           if (err) {
