@@ -22,7 +22,7 @@ export class AddProductController implements Controller {
       const product = await this.productApplication.handle(productDTO)
       return success(product)
     } catch (error) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

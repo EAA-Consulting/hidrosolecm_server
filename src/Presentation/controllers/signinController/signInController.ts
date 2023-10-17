@@ -30,7 +30,7 @@ export class SignInController implements Controller {
         return badRequest(new InvalidParamError('Email is not valid'))
       }
 
-      return serverError()
+      return serverError(error)
     }
   }
 }

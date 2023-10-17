@@ -10,7 +10,7 @@ export class GetProductController implements Controller {
       const product = await this.getProductApplication.handle()
       return success(product)
     } catch (error) {
-      return serverError()
+      return serverError(error)
     }
   }
 }

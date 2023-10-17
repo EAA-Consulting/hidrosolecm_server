@@ -34,7 +34,7 @@ export class SignUpController implements Controller {
       if (error.message.includes('exists')) {
         return badRequest(new InvalidParamError('User already exists'))
       }
-      return serverError()
+      return serverError(error)
     }
   }
 }
