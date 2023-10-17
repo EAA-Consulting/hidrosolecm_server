@@ -2,6 +2,7 @@ import { DeleteProductApplication } from '../../Application/use-cases/product/de
 import { GetProductApplication } from '../../Application/use-cases/product/getProductApp'
 import { ProductApplication } from '../../Application/use-cases/product/productApp'
 import { UpdateProductApp } from '../../Application/use-cases/product/updateProductApp'
+import { LogRepository } from '../../Infrastructure/mySqlDatabase/logRepository'
 import { DeleteProductRepository } from '../../Infrastructure/mySqlDatabase/product/deleteProductRepository'
 import { GetProductRepository } from '../../Infrastructure/mySqlDatabase/product/getProductRepository'
 import { ProductRepository } from '../../Infrastructure/mySqlDatabase/product/productRepository'
@@ -11,31 +12,37 @@ import { DeleteProductController } from '../../Presentation/controllers/product/
 import { GetProductController } from '../../Presentation/controllers/product/getProductController'
 import { UpdateProductController } from '../../Presentation/controllers/product/updateProductController'
 import { type Controller } from '../../Presentation/interfaces/controller'
+import { LogDecoratorController } from '../decorators/logDecoratorController'
 
 export const makeAddProductController = (): Controller => {
   const productRepository = new ProductRepository()
   const productApplication = new ProductApplication(productRepository)
 
-  return new AddProductController(productApplication)
+  const addProductController = new AddProductController(productApplication)
+  const logRepository = new LogRepository()
+  return new LogDecoratorController(addProductController, logRepository)
 }
 
 export const makeGetProductController = (): Controller => {
   const getProductRepository = new GetProductRepository()
   const getProductApplication = new GetProductApplication(getProductRepository)
-
-  return new GetProductController(getProductApplication)
+  const getProductController = new GetProductController(getProductApplication)
+  const logRepository = new LogRepository()
+  return new LogDecoratorController(getProductController, logRepository)
 }
 
 export const makeDeleteProductController = (): Controller => {
   const deleteProductRepository = new DeleteProductRepository()
   const deleteProductApplication = new DeleteProductApplication(deleteProductRepository)
-
-  return new DeleteProductController(deleteProductApplication)
+  const deleteProductController = new DeleteProductController(deleteProductApplication)
+  const logRepository = new LogRepository()
+  return new LogDecoratorController(deleteProductController, logRepository)
 }
 
 export const makeUpdateProductController = (): Controller => {
   const productRepository = new UpdateProductRepository()
   const productApplication = new UpdateProductApp(productRepository)
-
-  return new UpdateProductController(productApplication)
+  const updateProductController = new UpdateProductController(productApplication)
+  const logRepository = new LogRepository()
+  return new LogDecoratorController(updateProductController, logRepository)
 }
