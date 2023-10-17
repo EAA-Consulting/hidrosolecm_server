@@ -1,5 +1,5 @@
 import { type ILogErrorRepository } from '../../Domain/repositories/logError/LogErrorRepositoryInterface'
-import { serverError } from '../../Presentation/helpers/httpHelpers'
+import { badRequest, serverError } from '../../Presentation/helpers/httpHelpers'
 import { type Controller } from '../../Presentation/interfaces/controller'
 import { type HttpRequest, type HttpResponse } from '../../Presentation/interfaces/http'
 import { LogDecoratorController } from './logDecoratorController'
@@ -87,6 +87,29 @@ describe('Log Decorator Controller', () => {
     fakeError.message = 'any_message'
 
     const error = serverError(fakeError)
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => { resolve(error) }))
+    const logErrorSpy = jest.spyOn(logErrorRepositoryStub, 'log')
+    const httpRequest: HttpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+
+    }
+    await sut.handle(httpRequest)
+    expect(logErrorSpy).toBeCalledWith('any_stack', 'any_message')
+  })
+
+  test('Should call LogErrorRepository with correct error if controller returns a bad request error', async () => {
+    const { sut, logErrorRepositoryStub, controllerStub } = makeSut()
+
+    const fakeError = new Error()
+    fakeError.stack = 'any_stack'
+    fakeError.message = 'any_message'
+
+    const error = badRequest(fakeError)
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise((resolve, reject) => { resolve(error) }))
     const logErrorSpy = jest.spyOn(logErrorRepositoryStub, 'log')
     const httpRequest: HttpRequest = {
