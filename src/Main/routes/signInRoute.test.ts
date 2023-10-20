@@ -1,23 +1,7 @@
 import supertest from 'supertest'
-import { MySqlHelper } from '../../Infrastructure/helpers/database/mysqlHelper'
 import app from '../express/app'
 
 describe('SignIn Routes', () => {
-  beforeAll(async () => {
-    MySqlHelper.openConnection()
-    MySqlHelper.pool.getConnection(function (err, connection) {
-      if (err) {
-        console.log(err)
-        return
-      }
-      connection.query('DELETE FROM users WHERE EMAIL = ?', ['testesignin@teste.com.br'], (err, result: any) => {
-        if (err) {
-          console.log(err)
-        }
-      })
-    })
-  })
-
   test('Should return 200 on signin', async () => {
     const responseSignin = await supertest(app)
       .post('/api/signup')
