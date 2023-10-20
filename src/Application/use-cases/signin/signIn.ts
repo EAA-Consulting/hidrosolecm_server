@@ -15,7 +15,6 @@ export class SignIn implements SignInApplication {
       return await this.signInService.handle(email, password)
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      console.log(`Error ${error}`)
       throw new Error(error)
     }
   }
