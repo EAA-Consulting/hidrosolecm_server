@@ -1,47 +1,47 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import firebird from 'node-firebird'
+import Firebird from 'node-firebird'
 import { type AccountModel } from '../../../Domain/model/AccountModel'
 import { type SignInRepository } from '../../../Domain/repositories/account/signInRepository'
 import { FirebirdOptions } from '../../helpers/database/firebirdHelper'
 export class SigIn implements SignInRepository {
   async handle (email: string): Promise<AccountModel> {
     return await new Promise((resolve, reject) => {
-      firebird.attach(FirebirdOptions, (err, db) => {
+      Firebird.attach(FirebirdOptions, (err, db) => {
         if (err) {
-          reject(new Error('Error on getting connection'))
+          reject(new Error(`Error to connect to database, ${err}`))
           return
         }
-        const sqlSelect = 'SELECT ID, NAME, EMAIL, PASSWORD, ISADMIN FROM users WHERE EMAIL = ?'
-        db.transaction(firebird.ISOLATION_READ_COMMITTED, (err, transaction) => {
+        const sqlSelect = 'SELECT * FROM USERS WHERE EMAIL = ?'
+        db.transaction(Firebird.ISOLATION_READ_COMMITTED, (err: any, transaction) => {
           if (err) {
-            reject(new Error('Error on getting connection'))
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            reject(new Error(`Select from users in signin, ${err}`))
+            transaction.rollback()
             db.detach()
             return
           }
-          transaction.query(sqlSelect, [email], function (err, result: any) {
+          transaction.query(sqlSelect, [email], (err, result: any) => {
             if (err) {
-              reject(new Error(`Error to execute query ${err}`))
-              transaction.rollback()
               db.detach()
-              return
-            }
-            if (result.length === 0) {
-              reject(new Error('User not found'))
               transaction.rollback()
+              reject(new Error(`Error to execute query, ${err}`))
+            } else {
+              transaction.commit()
+              if (result.length === 0) {
+                db.detach()
+                reject(new Error('User not found'))
+                return
+              }
               db.detach()
-              return
-            }
-            transaction.commit()
-            db.detach()
-            const accountModel: AccountModel = {
-              id: result[0].id,
-              name: result[0].name,
-              email: result[0].email,
-              password: result[0].password,
-              admin: result[0].isAdmin
+              resolve({
+                id: result[0].id,
+                name: result[0].name,
+                email: result[0].email,
+                password: result[0].password,
+                admin: false
 
+              })
             }
-            resolve(accountModel)
           })
         })
       })
