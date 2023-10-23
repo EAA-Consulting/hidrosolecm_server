@@ -25,7 +25,9 @@ const config: Config = {
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)'
   ],
-  setupFilesAfterEnv: ['<rootDir>/setupTests.ts']
+  modulePathIgnorePatterns: [
+    'mySqlDatabase'
+  ]
 
 }
 
