@@ -20,7 +20,6 @@ export class AddAccount implements AddAccountRepository {
             transaction.rollback()
           } else {
             db.query(sqlInsert, [name, email, password], (err, result: any) => {
-              console.log(result)
               if (err) {
                 transaction.rollback()
                 db.detach()
