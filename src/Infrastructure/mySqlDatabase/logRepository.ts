@@ -5,7 +5,7 @@ export class LogRepository implements ILogErrorRepository {
     await new Promise((resolve, reject) => {
       MySqlHelper.pool.getConnection((err, connection) => {
         if (err) {
-          reject(new Error('Error on getting connection'))
+          reject(new Error('Error on getting connection '))
           return
         }
         const sql = 'INSERT INTO logs (logDate, stack, message) VALUES (?, ?, ?)'
