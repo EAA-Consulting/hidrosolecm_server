@@ -5,7 +5,6 @@ import { FirebirdOptions } from '../../helpers/database/firebirdHelper'
 export class GetProductRepository implements IGetProductRepository {
   async handle (): Promise<ProductModel[]> {
     return await new Promise((resolve, reject) => {
-      let products: ProductModel[] = []
       firebird.attach(FirebirdOptions, (err, db) => {
         if (err) {
           reject(err)
@@ -18,7 +17,7 @@ export class GetProductRepository implements IGetProductRepository {
             return
           }
 
-          const sqlSelect = 'SELECT * FROM product'
+          const sqlSelect = 'SELECT id, storeCode as "storeCode", imagePath as "imagePath", name, description, category, altText as "altText", updated FROM product'
           transaction.query(sqlSelect, [], (err, result) => {
             if (err) {
               transaction.rollback()
@@ -28,8 +27,17 @@ export class GetProductRepository implements IGetProductRepository {
             }
             transaction.commit()
             db.detach()
-            products = result as ProductModel[]
-            resolve(products)
+            const transformedProducts = result.map((r) => {
+              return {
+                ...r,
+                storeCode: r.storecode,
+                imagePath: r.imagepath,
+                altText: r.alttext
+              }
+            }
+            ) as ProductModel[] || []
+
+            resolve(transformedProducts)
           })
         })
       })
