@@ -10,9 +10,10 @@ describe('Add Account Repository', () => {
         return
       }
       const sqlDelete = 'DELETE FROM users WHERE EMAIL = ?;'
-      db.transaction(firebird.ISOLATION_SERIALIZABLE, (err, transaction) => {
+      db.transaction(firebird.ISOLATION_READ_COMMITTED, (err, transaction) => {
         if (err) {
           console.log(err)
+          transaction.rollback()
           return
         }
         transaction.execute(sqlDelete, ['addAccountTEsteRepo@teste.com.br'], (err: any, result: any) => {
