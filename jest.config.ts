@@ -5,7 +5,7 @@ const config: Config = {
   collectCoverage: true,
   coveragePathIgnorePatterns: ['/interfaces'],
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/**/authenticatedUser.ts', '!<rootDir>/src/**/Main/server.ts', '!<rootDir>/src/**/**/index.ts', '!<rootDir>/src/Domain/model/**', '!<rootDir>/src/Domain/repositories/**', '!<rootDir>/src/Infrastructure/**/*Helper.ts', '!**/test/**', '!<rootDir>/src/Domain/DTOs/*.ts'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/**/authenticatedUser.ts', '!<rootDir>/src/**/Main/server.ts', '!<rootDir>/src/**/**/index.ts', '!<rootDir>/src/Domain/model/**', '!<rootDir>/src/Domain/repositories/**', '!<rootDir>/src/Infrastructure/**/*Helper.ts', '!**/test/**', '!<rootDir>/src/Domain/DTOs/*.ts', '!<rootDir>/src/Infrastructure/mySqlDatabase/**/*.ts'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
