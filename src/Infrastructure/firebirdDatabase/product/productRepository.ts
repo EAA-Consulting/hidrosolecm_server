@@ -9,12 +9,14 @@ export class ProductRepository implements IProductRepository {
       firebird.attach(FirebirdOptions, (err, db) => {
         if (err) {
           reject(err)
+          console.log(err)
           return
         }
 
         db.transaction(firebird.ISOLATION_READ_COMMITTED, (err, transaction) => {
           if (err) {
             reject(err)
+            console.log(err)
             db.detach()
             return
           }
@@ -23,6 +25,7 @@ export class ProductRepository implements IProductRepository {
           transaction.query(sqlSelect, [product.imagePath], (err, result: any) => {
             if (err) {
               reject(err)
+              console.log(err)
               db.detach()
               return
             }

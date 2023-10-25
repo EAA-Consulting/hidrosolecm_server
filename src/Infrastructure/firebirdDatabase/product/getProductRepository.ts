@@ -8,11 +8,13 @@ export class GetProductRepository implements IGetProductRepository {
       firebird.attach(FirebirdOptions, (err, db) => {
         if (err) {
           reject(err)
+          console.log(err)
           return
         }
         db.transaction(firebird.ISOLATION_READ_COMMITTED, (err, transaction) => {
           if (err) {
             reject(err)
+            console.log(err)
             db.detach()
             return
           }
@@ -22,6 +24,7 @@ export class GetProductRepository implements IGetProductRepository {
             if (err) {
               transaction.rollback()
               db.detach()
+              console.log(err)
               reject(err)
               return
             }
