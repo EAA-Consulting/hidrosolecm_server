@@ -7,6 +7,7 @@ import { SignUpController } from '../../Presentation/controllers/signupControlle
 import { type Controller } from '../../Presentation/interfaces/controller'
 import { EmailValidatorAdapter } from '../../Presentation/utils/EmailValidatorAdapter'
 import { LogDecoratorController } from '../decorators/logDecoratorController'
+import { makeValidationComposite } from './validation'
 
 export const makeSignupController = (): Controller => {
   const salt = 12
@@ -16,7 +17,7 @@ export const makeSignupController = (): Controller => {
   const addAccountService = new AddAccount(encrypterAdapter, addAccountRepository)
   const signupApplication = new SignupApplication(emailValidatorAdapter, addAccountService)
 
-  const controller = new SignUpController(signupApplication)
+  const controller = new SignUpController(signupApplication, makeValidationComposite())
   const logRepository = new LogRepository()
   return new LogDecoratorController(controller, logRepository)
 }
