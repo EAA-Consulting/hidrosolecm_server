@@ -1,11 +1,13 @@
 import { type SignUpApplication } from '../../../Application/use-cases/interfaces/signupInterface'
 import { type AccountModel } from '../../../Domain/model/AccountModel'
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
+import { type Validation } from '../../helpers/validation/Validation'
 import { type Controller } from '../../interfaces/controller'
 import { SignUpController } from './signupController'
 
 interface SutTypes {
   signupApplicationStub: SignUpApplication
+  validationStub: Validation
   sut: Controller
 
 }
@@ -27,11 +29,22 @@ const makeSignUpApplication = (): SignUpApplication => {
   return new SignupAppMock()
 }
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate (input: any): Error | null {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 const makeSut = (): SutTypes => {
   const signupApplication = makeSignUpApplication()
-  const signupController = new SignUpController(signupApplication)
+  const validationStub = makeValidation()
+  const signupController = new SignUpController(signupApplication, validationStub)
   return {
     signupApplicationStub: signupApplication,
+    validationStub,
     sut: signupController
   }
 }
@@ -263,5 +276,20 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('User already exists'))
+  })
+  test('Ensure call validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validationSpec = jest.spyOn(validationStub, 'validate')
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    await sut.handle(httpRequest)
+    expect(validationSpec).toHaveBeenCalledWith(httpRequest.body)
   })
 })
