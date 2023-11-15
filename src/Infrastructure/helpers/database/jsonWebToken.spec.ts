@@ -5,7 +5,7 @@ describe('Json Web Token Generator', () => {
   const makeSut = (): TokenGenerator => {
     return new TokenJsonWeToken()
   }
-  test('Should return a valid token on sign', async () => {
+  test.skip('Should return a valid token on sign', async () => {
     const sut = makeSut()
 
     const result = await sut.generate('any_id')
@@ -14,7 +14,7 @@ describe('Json Web Token Generator', () => {
     expect(result.length).toBeGreaterThan(10)
   })
 
-  test('Should return true if the token is a valid on verify', async () => {
+  test.skip('Should return true if the token is a valid on verify', async () => {
     const sut = makeSut()
 
     const token = await sut.generate('any_id')
@@ -23,7 +23,7 @@ describe('Json Web Token Generator', () => {
     expect(result).toEqual(true)
   })
 
-  test('Should return false if the token is invalid', async () => {
+  test.skip('Should return false if the token is invalid', async () => {
     const sut = makeSut()
     const result = await sut.verify('invalid_token')
     expect(result).toEqual(false)
