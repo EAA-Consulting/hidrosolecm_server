@@ -7,6 +7,7 @@
     "start": "nodemon src/Main/server.ts",
     "test": "jest --passWithNoTests  --silent --noStackTrace --runInBand --forceExit",
     "test:unit": "npm test -- --watch -c jest-unit-config.ts",
+    "test:unit:ci": "npm test -- --coverage --no-cache -c jest-unit-config.ts",
     "test:verbose": "jest --passWithNoTests --watch",
     "test:integration": "npm test -- --watch -c jest-integration-config.ts",
     "test:staged": "npm test --findRelatedTests",
