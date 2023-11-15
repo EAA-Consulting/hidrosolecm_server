@@ -50,19 +50,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('SignUp Controller', () => {
-  test('Should return 400 if no name is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    }
-
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-  })
   test('Should return 200 all fields are passed', async () => {
     const { sut } = makeSut()
     const httpRequest = {
@@ -114,59 +101,6 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(200)
   })
 
-  test('Ensure I get error 400 from Controller if I dont pass name', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('name'))
-  })
-  test('Ensure I get error 400 from Controller if I dont pass email', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('email'))
-  })
-  test('Ensure I get error 400 from Controller if I dont pass password', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email',
-        passwordConfirmation: 'any_password'
-      }
-
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('password'))
-  })
-  test('Ensure I get error 400 from Controller if I dont pass passwordConfirmation', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password'
-      }
-
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.body).toEqual(new MissingParamError('passwordConfirmation'))
-  })
-
   test('Ensure SignupApplication is called with correct params', async () => {
     const { sut, signupApplicationStub } = makeSut()
     const spySignup = jest.spyOn(signupApplicationStub, 'handle')
@@ -182,38 +116,6 @@ describe('SignUp Controller', () => {
     }
     await sut.handle(httpRequest)
     expect(spySignup).toHaveBeenCalledWith('any_name', 'any_email', 'any_password')
-  })
-
-  test("Ensure I get error 400 from Controller if I don't pass a valid email", async () => {
-    const { sut, signupApplicationStub } = makeSut()
-    jest.spyOn(signupApplicationStub, 'handle').mockImplementationOnce(() => { throw new InvalidParamError('Email is not valid') })
-
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toEqual(new InvalidParamError('Email is not valid'))
-  })
-  test('Ensure I get error 400 when Password does not match password Confirmation', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'any_password2'
-      }
-    }
-    const response = await sut.handle(httpRequest)
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toEqual(new InvalidParamError('Password and password confirmation must be equal'))
   })
 
   test('Should sut throws if signupApplication throws', async () => {
@@ -291,5 +193,19 @@ describe('SignUp Controller', () => {
     }
     await sut.handle(httpRequest)
     expect(validationSpec).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Ensure I get error 400 if I dont pass a field to the controller', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpRequest = {
+      body: {
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new MissingParamError('any_field'))
   })
 })
