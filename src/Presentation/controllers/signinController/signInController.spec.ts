@@ -2,15 +2,25 @@ import { type SignInApplication } from '../../../Application/use-cases/interface
 import { type AuthenticatedUser } from '../../../Application/use-cases/signin/value_objects/authenticatedUser'
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { badRequest } from '../../helpers/httpHelpers'
+import { type Validation } from '../../helpers/validation/Validation'
 import { type Controller } from '../../interfaces/controller'
 import { SignInController } from './signInController'
 
 interface SubTypes {
   sut: Controller
+  validationStub: Validation
   signupAppSub: SignInApplication
 
 }
 describe('SignIn Controller', () => {
+  const makeValidation = (): Validation => {
+    class ValidationStub implements Validation {
+      validate (input: any): Error | null {
+        return null
+      }
+    }
+    return new ValidationStub()
+  }
   const makeSignInApp = (): SignInApplication => {
     class SignInAppSub implements SignInApplication {
       async handle (email: string, password: string): Promise<AuthenticatedUser> {
@@ -21,9 +31,11 @@ describe('SignIn Controller', () => {
   }
   const makeSut = (): SubTypes => {
     const signupAppSub = makeSignInApp()
-    const signInController = new SignInController(signupAppSub)
+    const validation = makeValidation()
+    const signInController = new SignInController(signupAppSub, validation)
     return {
       sut: signInController,
+      validationStub: validation,
       signupAppSub
     }
   }
@@ -50,31 +62,6 @@ describe('SignIn Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body.token).toBeTruthy()
-  })
-
-  it('Should return 400 in case email is not send', async () => {
-    const { sut } = makeSut()
-
-    const httpRequest = {
-      body: {
-        password: 'any_password'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('email'))
-  })
-  it('Should return 400 in case password is not send', async () => {
-    const { sut } = makeSut()
-
-    const httpRequest = {
-      body: {
-        email: 'email'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
   it("Should return 400 in case password doesn't match", async () => {
@@ -136,5 +123,35 @@ describe('SignIn Controller', () => {
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new InvalidParamError('Email is not valid'))
+  })
+
+  test('Ensure call validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validationSpec = jest.spyOn(validationStub, 'validate')
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    await sut.handle(httpRequest)
+    expect(validationSpec).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Ensure I get error 400 if I dont pass a field to the controller', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpRequest = {
+      body: {
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new MissingParamError('any_field'))
   })
 })
