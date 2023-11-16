@@ -9,4 +9,11 @@ describe('Compare fields validation', () => {
 
     expect(error).toEqual(new InvalidParamError('passwordConfirmation'))
   })
+  test('Return null if fiedls are equal', () => {
+    const sut = new CompareFieldsValidation('password', 'passwordConfirmation')
+
+    const error = sut.validate({ password: '1234', passwordConfirmation: '1234' })
+
+    expect(error).toBeFalsy()
+  })
 })
