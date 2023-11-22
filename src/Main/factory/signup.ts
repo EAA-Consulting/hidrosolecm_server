@@ -5,18 +5,17 @@ import { AddAccount as AddAccountRepository } from '../../Infrastructure/mySqlDa
 import { LogRepository } from '../../Infrastructure/mySqlDatabase/logRepository'
 import { SignUpController } from '../../Presentation/controllers/signupController/signupController'
 import { type Controller } from '../../Presentation/interfaces/controller'
-import { EmailValidatorAdapter } from '../../Presentation/utils/EmailValidatorAdapter'
 import { LogDecoratorController } from '../decorators/logDecoratorController'
+import { makeValidationComposite } from './validation'
 
 export const makeSignupController = (): Controller => {
   const salt = 12
   const encrypterAdapter = new EncrypterAdapter(salt)
-  const emailValidatorAdapter = new EmailValidatorAdapter()
   const addAccountRepository = new AddAccountRepository()
   const addAccountService = new AddAccount(encrypterAdapter, addAccountRepository)
-  const signupApplication = new SignupApplication(emailValidatorAdapter, addAccountService)
+  const signupApplication = new SignupApplication(addAccountService)
 
-  const controller = new SignUpController(signupApplication)
+  const controller = new SignUpController(signupApplication, makeValidationComposite())
   const logRepository = new LogRepository()
   return new LogDecoratorController(controller, logRepository)
 }

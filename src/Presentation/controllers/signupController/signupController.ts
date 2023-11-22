@@ -1,28 +1,24 @@
 import { type SignUpApplication } from '../../../Application/use-cases/interfaces/signupInterface'
-import { InvalidParamError, MissingParamError } from '../../errors'
+import { InvalidParamError } from '../../errors'
 import { badRequest, serverError, success } from '../../helpers/httpHelpers'
+import { type Validation } from '../../helpers/validation/Validation'
 import { type Controller } from '../../interfaces/controller'
 import { type HttpRequest, type HttpResponse } from '../../interfaces/http'
 
 export class SignUpController implements Controller {
-  signupApplication: SignUpApplication
-  constructor (signupApplication: SignUpApplication) {
+  constructor (private readonly signupApplication: SignUpApplication, private readonly validation: Validation) {
     this.signupApplication = signupApplication
+    this.validation = validation
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { name, email, password, passwordConfirmation } = httpRequest.body
-      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field))
-        }
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
       }
 
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamError('Password and password confirmation must be equal'))
-      }
+      const { name, email, password } = httpRequest.body
 
       const accountModel = await this.signupApplication.handle(name, email, password)
 

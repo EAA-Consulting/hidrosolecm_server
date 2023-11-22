@@ -52,31 +52,6 @@ describe('SignIn Controller', () => {
     expect(httpResponse.body.token).toBeTruthy()
   })
 
-  it('Should return 400 in case email is not send', async () => {
-    const { sut } = makeSut()
-
-    const httpRequest = {
-      body: {
-        password: 'any_password'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('email'))
-  })
-  it('Should return 400 in case password is not send', async () => {
-    const { sut } = makeSut()
-
-    const httpRequest = {
-      body: {
-        email: 'email'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('password'))
-  })
-
   it("Should return 400 in case password doesn't match", async () => {
     const { sut, signupAppSub } = makeSut()
     jest.spyOn(signupAppSub, 'handle').mockImplementation(() => { throw new InvalidParamError('credentials') })

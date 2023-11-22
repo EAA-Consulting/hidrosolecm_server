@@ -1,5 +1,5 @@
 import { type SignInApplication } from '../../../Application/use-cases/interfaces/signInInterface'
-import { InvalidParamError, MissingParamError } from '../../errors'
+import { InvalidParamError } from '../../errors'
 import { badRequest, serverError, success } from '../../helpers/httpHelpers'
 import { type Controller } from '../../interfaces/controller'
 import { type HttpRequest, type HttpResponse } from '../../interfaces/http'
@@ -8,13 +8,6 @@ export class SignInController implements Controller {
   constructor (private readonly signInApplication: SignInApplication) { }
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredFields = ['email', 'password']
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field))
-        }
-      }
-
       const { email, password } = httpRequest.body
       const account = await this.signInApplication.handle(email, password)
 
