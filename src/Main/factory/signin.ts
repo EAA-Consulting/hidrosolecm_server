@@ -7,7 +7,6 @@ import { LogRepository } from '../../Infrastructure/mySqlDatabase/logRepository'
 import { SignInController } from '../../Presentation/controllers/signinController/signInController'
 import { type Controller } from '../../Presentation/interfaces/controller'
 import { LogDecoratorController } from '../decorators/logDecoratorController'
-import { makeValidationComposite } from './validation'
 export const makeSignInController = (): Controller => {
   const salt = 12
   const encrypterAdapter = new EncrypterAdapter(salt)
@@ -15,7 +14,7 @@ export const makeSignInController = (): Controller => {
   const tokenGenerator = new TokenJsonWeToken()
   const signInService = new SignInService(encrypterAdapter, tokenGenerator, signInRepository)
   const signInApplication = new SignInApplication(signInService)
-  const controller = new SignInController(signInApplication, makeValidationComposite())
+  const controller = new SignInController(signInApplication)
   const logRepository = new LogRepository()
   return new LogDecoratorController(controller, logRepository)
 }
