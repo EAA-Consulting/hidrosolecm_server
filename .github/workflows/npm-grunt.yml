@@ -19,7 +19,13 @@ jobs:
           MYSQL_PASSWORD: mysql
         ports:
           - 3306:3306
-
+      env:
+        MYSQL_HOST=locahost
+        MYSQL_PORT=3306
+        MYSQL_DATABASE='hidrosolcm'
+        MYSQL_USER='root'
+        MYSQL_PASSWORD='mysql'
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
