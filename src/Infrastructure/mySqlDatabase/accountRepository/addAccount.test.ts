@@ -8,7 +8,6 @@ describe('Add Account Repository', () => {
     const sqlDelete = 'DELETE FROM users WHERE EMAIL = ?;'
     mysqlPool.getConnection((err, mysqlConnection) => {
       if (err) {
-        mysqlConnection.release()
         console.log(err)
         return
       }
