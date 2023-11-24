@@ -28,6 +28,15 @@ jobs:
       MYSQL_PASSWORD: 'mysql'
       
     steps:
+      - name: Debug MySQL Connection
+        run: |
+          echo "MYSQL_HOST=$MYSQL_HOST"
+          echo "MYSQL_PORT=$MYSQL_PORT"
+          echo "MYSQL_USER=$MYSQL_USER"
+          echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+          echo "MYSQL_DATABASE=$MYSQL_DATABASE"
+      
+        # Add any other relevant debugging output
       - name: Checkout code
         uses: actions/checkout@v3
 
