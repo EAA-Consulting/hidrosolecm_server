@@ -1,4 +1,4 @@
-name: NodeJS with Grunt
+name: NodeJS CI
 
 on:
   push:
@@ -10,19 +10,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+          MYSQL_DATABASE: hidrosolcm
+          MYSQL_PASSWORD: mysql
+        ports:
+          - 3306:3306
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Docker
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Build
+          node-version: '20'
+        
+      - name: "Instala o docker no Github actions"
         run: |
-          npm install
-          npm run test:unit:ci
+         sudo apt-get update
+         sudo apt-get install -y docker-ce-cli
+
+      - name: Build and test Node.js app in Docker
+        run: |
+          # Construa a imagem Docker
+          docker build -t hidrosolserver .
+          # Execute os testes dentro do contêiner
+          docker run hidrosolserver npm run test:ci
