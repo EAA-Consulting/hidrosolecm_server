@@ -44,14 +44,8 @@ jobs:
       - name: Print MySQL Error Log
         run: cat /var/log/mysql/error.log
 
-      - name: Set MySQL Configuration
-        run: echo -e "[client]\nuser=root\npassword=${{ secrets.MYSQL_ROOT_PASSWORD }}" > $HOME/.my.cnf
-      
       - name: Check MySQL Status
-        run: mysql -h 127.0.0.1 -e 'status'
-        env:
-          MYSQL_PWD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-       
+        run: mysql -h 127.0.0.1 --port 3306 -u root -pmysql -e 'CREATE DATABASE IF NOT EXISTS test;'
       
 
         # Add any other relevant debugging output
