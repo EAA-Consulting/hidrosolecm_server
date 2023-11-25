@@ -21,7 +21,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
-      MYSQL_HOST: localhost
+      MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       MYSQL_DATABASE: 'hidrosolcm'
       MYSQL_USER: 'root'
@@ -38,15 +38,15 @@ jobs:
       - name: Start MySQL Service
         run: sudo service mysql start
 
-      - name: Print MySQL Error Log
-        run: cat /var/log/mysql/error.log
-        
       - name: Check MySQL Service Status
         run: service mysql status
-
+  
       - name: Check MySQL Status
-        run: mysql -h localhost -u root -p'mysql' -e 'status'
-      
+        run: mysql -h 127.0.0.1 -u root -p'mysql' -e 'status'
+       
+      - name: Print MySQL Error Log
+        run: cat /var/log/mysql/error.log
+
         # Add any other relevant debugging output
       - name: Checkout code
         uses: actions/checkout@v3
