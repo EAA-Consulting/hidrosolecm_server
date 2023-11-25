@@ -36,7 +36,7 @@ jobs:
           echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
           echo "MYSQL_DATABASE=$MYSQL_DATABASE"
       - name: Check MySQL Status
-        run: mysql -h localhost -u root -p mysql -e 'status'
+        run: mysql -h localhost -u root -p'mysql' -e 'status'
       
         # Add any other relevant debugging output
       - name: Checkout code
