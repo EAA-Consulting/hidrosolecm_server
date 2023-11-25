@@ -34,7 +34,11 @@ jobs:
           echo "MYSQL_PORT=$MYSQL_PORT"
           echo "MYSQL_USER=$MYSQL_USER"
           echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
-          echo "MYSQL_DATABASE=$MYSQL_DATABASE"
+          echo "MYSQL_DATABASE=$MYSQL_DAABASE"
+          
+      - name: Check MySQL Service Status
+        run: service mysql status
+
       - name: Check MySQL Status
         run: mysql -h localhost -u root -p'mysql' -e 'status'
       
