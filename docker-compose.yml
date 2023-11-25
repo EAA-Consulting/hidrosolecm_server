@@ -1,0 +1,38 @@
+version: '3'
+services:
+  # Nodejs application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - rede
+    ports: 
+      - "3333:3333"
+    depends_on:
+      - db
+
+  # MySql Server service
+  db:
+    image: mysql
+    networks:
+      - rede
+    command: --bind-address=0.0.0.0
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: hidrosolcm
+      MYSQL_PASSWORD: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-init-scripts:/docker-entrypoint-initdb.d
+    
+
+networks:
+  rede:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
+

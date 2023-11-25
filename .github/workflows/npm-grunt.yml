@@ -1,4 +1,4 @@
-name: NodeJS with Grunt
+name: NodeJS CI
 
 on:
   push:
@@ -10,19 +10,61 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+          MYSQL_DATABASE: hidrosolcm
+          MYSQL_PASSWORD: mysql
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: 'hidrosolcm'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'mysql'
+      
     steps:
-      - uses: actions/checkout@v3
+      - name: Debug MySQL Connection
+        run: |
+          echo "MYSQL_HOST=$MYSQL_HOST"
+          echo "MYSQL_PORT=$MYSQL_PORT"
+          echo "MYSQL_USER=$MYSQL_USER"
+          echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+          echo "MYSQL_DATABASE=$MYSQL_DAABASE"
+      - name: Start MySQL Service
+        run: sudo service mysql start
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Check MySQL Service Status
+        run: service mysql status
+      
+      - name: Print MySQL Error Log
+        run: cat /var/log/mysql/error.log
+
+      - name: Check MySQL Status
+        run: mysql -h 127.0.0.1 --port 3306 -u root -pmysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+      
+
+        # Add any other relevant debugging output
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Docker
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Build
+          node-version: '20'
+        
+      - name: "Instala o docker no Github actions"
         run: |
-          npm install
-          npm run test:unit:ci
+         sudo apt-get update
+         sudo apt-get install -y docker-ce-cli
+
+      - name: Build and test Node.js app in Docker
+        run: |
+          # Construa a imagem Docker
+          docker build -t hidrosolserver .
+          # Execute os testes dentro do contêiner
+          docker run hidrosolserver npm run test:ci
