@@ -35,7 +35,12 @@ jobs:
           echo "MYSQL_USER=$MYSQL_USER"
           echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
           echo "MYSQL_DATABASE=$MYSQL_DAABASE"
-          
+      - name: Start MySQL Service
+        run: sudo service mysql start
+
+      - name: Print MySQL Error Log
+        run: cat /var/log/mysql/error.log
+        
       - name: Check MySQL Service Status
         run: service mysql status
 
