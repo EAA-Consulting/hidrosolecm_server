@@ -40,12 +40,14 @@ jobs:
 
       - name: Check MySQL Service Status
         run: service mysql status
-  
-      - name: Check MySQL Status
-        run: mysql -h 127.0.0.1 -u root -p'mysql' -e 'status'
-       
+      
       - name: Print MySQL Error Log
         run: cat /var/log/mysql/error.log
+        
+      - name: Check MySQL Status
+        run: mysql -h 127.0.0.1 --defaults-file=~/.my.cnf -e 'status'
+       
+      
 
         # Add any other relevant debugging output
       - name: Checkout code
