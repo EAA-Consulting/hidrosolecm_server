@@ -1,3 +1,14 @@
+-- Create the table if it doesn't exist
+CREATE TABLE IF NOT EXISTS hidrosolcm.product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    storeCode VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    altText TEXT NOT NULL,
+    imagePath TEXT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL
+);
+
 INSERT INTO hidrosolcm.product (storeCode,description,altText,imagePath,name,category) VALUES
 	 ('1195','Torneira Bica Móvel Lavatorio Pesada 1/2','Torneira Bica Móvel Lavatorio Pesada 1/2','1195_12_TORN_B_LAVATORIO_PESADA_C-52.jpg','C-52','Bica Movel,Lavatório'),
 	 ('1130','Torneira de Jardim Longa 3/4 Cromada','Torneira de Jardim Longa 3/4 Cromada','1130_34_torneira_jardim_longa_cr_c23.jpg','C-23','Jardim'),

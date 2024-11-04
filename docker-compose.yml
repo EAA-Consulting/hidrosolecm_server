@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    build: .
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: hidrosolcm
+      MYSQL_ROOT_PASSWORD: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      #run init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./product_202310041002.sql:/docker-entrypoint-initdb.d/product_202310041002.sql
